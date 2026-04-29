@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -47,9 +48,20 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=noise.db"));
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddAuthorization();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 
 var app = builder.Build();
 
@@ -82,7 +94,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 
+/*
 // get all links from db
 app.MapGet("/api/links", async (AppDbContext db) =>
 {
@@ -101,7 +116,9 @@ app.MapPost("/api/links", async (AppDbContext db, LinkCreateDto linkDto) =>
     db.Links.Add(newLink);
     await db.SaveChangesAsync();
     return Results.Created($"/api/links/{newLink.Id}", newLink);
-});
+})
+.RequireAuthorization();
+
 
 // update entry in db
 app.MapPut("/api/links/{id}", async (int id, LinkCreateDto linkDto, AppDbContext db) =>
@@ -132,8 +149,9 @@ app.MapDelete("/api/links/{id}", async (int id, AppDbContext db) =>
 
     return Results.Ok(new { message = $"Link {id} deleted successfully." });
 });
+*/
 
-
+// admin login
 app.MapPost("/api/login", async (LoginDto loginDto, AppDbContext db, IConfiguration config) =>
 {
     var user = await db.Users.FirstOrDefaultAsync(u => u.Username == loginDto.Username);
