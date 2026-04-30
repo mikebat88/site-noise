@@ -1,0 +1,116 @@
+body {
+    background-color: #0a0a0a;
+    margin: 0;
+    padding: 0;
+}
+
+.music-page {
+    text-align: center;
+    width: 100%;
+}
+
+.album-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 90px;
+    width: 90%;
+    max-width: 600px;
+    margin: 40px auto; 
+    padding: 20px;
+}
+
+@media (max-width: 600px) {
+    .album-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+}
+
+.album-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.album-cover {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border: 1px solid #333;
+    filter: grayscale(20%);
+}
+
+.album-name {
+    margin-top: 15px;
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1rem;
+    color: white;
+}
+
+.album-links {
+    margin-top: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.album-links a {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.album-links a:hover {
+    text-shadow: 0 0 30px rgba(255, 175, 3, 0.699);
+}
+
+.separator {
+    color: #444;
+    font-size: 1rem;
+    margin: 0 10px;
+    user-select: none;
+}
+
+.add-album-button {
+    display: flex;
+    justify-self: center;
+    max-width: 50px;
+    text-decoration: none;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 8px 16px;
+    margin: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-album-button:hover {
+    background-color: rgb(255, 255, 255);
+    color: black;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.edit-buttons a {
+    border-radius: 5px;
+    text-decoration: none;
+    background-color: white;
+    color: black;
+    padding: 8px 16px;
+    margin: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edit-buttons a:hover {
+    background-color: rgb(155, 155, 155);
+    color: white;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}

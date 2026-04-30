@@ -52,7 +52,7 @@
 }
 
 .social-links a:hover {
-  color: #8d99ae;
+  color: #fd99a2;
 }
 
 .page-links {
@@ -69,7 +69,7 @@
 }
 
 .page-links a:not(.active):hover {
-    color: #8d99ae;
+    color: #c9c9c9;
 }
 
 .page-links a.active {
