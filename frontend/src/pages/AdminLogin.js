@@ -7,14 +7,6 @@ const LoginForm = () => {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
-    // if the admin is already logged in, redirect straight to dashboard
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            navigate('/admin/dashboard', { replace: true });
-        }
-    }, [navigate]);
-
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     };
@@ -33,8 +25,6 @@ const LoginForm = () => {
                 const data = await response.json();
                 
                 localStorage.setItem('token', data.token);
-                
-                setMessage('');
                 
                 setTimeout(() => {
                     navigate('/admin/dashboard', { replace: true }); 

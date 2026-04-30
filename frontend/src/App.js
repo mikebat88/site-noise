@@ -11,6 +11,7 @@ import EditAlbums from './pages/EditAlbums';
 import EditShows from './pages/EditShows';
 import EditLatest from './pages/EditLatest';
 import ChangePassword from './pages/ChangePassword';
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 function App() {
@@ -28,11 +29,11 @@ function App() {
 
         {/* PROTECTED ADMIN ROUTES */}
         <Route element={<AdminLayout />}>
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/albums-edit" element={<EditAlbums />} />
-          <Route path="/admin/latest-edit" element={<EditLatest />} />
-          <Route path="/admin/shows-edit" element={<EditShows />} />
-          <Route path="/admin/change-password" element={<ChangePassword />} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute> <AdminDashboard /> </ProtectedRoute>} />
+            <Route path="/admin/albums-edit" element={<ProtectedRoute> <EditAlbums /> </ProtectedRoute>} />
+            <Route path="/admin/latest-edit" element={<ProtectedRoute> <EditLatest /> </ProtectedRoute>} />
+            <Route path="/admin/shows-edit" element={<ProtectedRoute> <EditShows /> </ProtectedRoute>} />
+            <Route path="/admin/change-password" element={<ProtectedRoute> <ChangePassword /> </ProtectedRoute>} />
         </Route>
       </Routes>
     </Router>

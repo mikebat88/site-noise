@@ -117,10 +117,12 @@ app.MapPost("/api/login", async (LoginDto loginDto, AppDbContext db, IConfigurat
     });
 });
 
+// verify if the admin is logged and whether the token is correct
+app.MapGet("/api/verify", () => Results.Ok()).RequireAuthorization();
+
+/*
 app.MapPost("/api/admin/change-password", async (ChangePasswordDto dto, AppDbContext db, HttpContext context) =>
 {
-    // 1. Get the User ID from the JWT Claims
-    // (Assuming you stored 'NameIdentifier' or 'sub' in your token)
     var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (userIdClaim == null) return Results.Unauthorized();
 
@@ -129,24 +131,21 @@ app.MapPost("/api/admin/change-password", async (ChangePasswordDto dto, AppDbCon
 
     if (user == null) return Results.NotFound("User not found.");
 
-    // 2. Verify the CURRENT password first
     if (!BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.PasswordHash))
     {
         return Results.BadRequest(new { message = "Current password is incorrect." });
     }
 
-    // 3. Hash and save the NEW password
     user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
     
-    // 4. Update status (if you have a 'MustChangePassword' flag)
     user.MustChangePassword = false;
 
     await db.SaveChangesAsync();
 
     return Results.Ok(new { message = "Password updated successfully." });
 })
-.RequireAuthorization(); // Important: Protect this route!
-
+.RequireAuthorization();
+*/
 
 // get all albums from db
 app.MapGet("/api/albums", async (AppDbContext db) =>
