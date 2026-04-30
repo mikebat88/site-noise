@@ -3,16 +3,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import "./AdminDashboard.css"
 
 const Dashboard = () => {
-    const navigate = useNavigate();
-
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/admin', { replace: true });
-        }
-    }, [navigate]);
-
     return (
         <div className="admin-container">
             <nav className="admin-sidebar">

@@ -1,10 +1,11 @@
+import "./AdminStyleGlobal.css";
 import React, { useState, useEffect  } from "react";
 import { useNavigate } from "react-router-dom";
-import "./AdminLogin.css";
 
 const LoginForm = () => {
     const [credentials, setCredentials] = useState({ username: '', password: '' });
     const [message, setMessage] = useState('');
+    const [status, setStatus] = useState('');
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -31,9 +32,11 @@ const LoginForm = () => {
                 }, 500);
                 
             } else {
+                setStatus('error');
                 setMessage('Invalid username or password');
             }
         } catch (error) {
+            setStatus('error');
             setMessage('Server error.');
         }
     };
@@ -57,7 +60,11 @@ const LoginForm = () => {
                     <button type="submit" >Login</button>
                 </form>
                 <div className="message-container">
-                    {message ? <p>{message}</p> : null}
+                    {message ? (
+                        <p className={`status-msg ${status === 'success' ? 'success-msg' : 'error-msg'}`}>
+                            {message}
+                        </p>
+                    ) : null}
                 </div>
             </div>
         </div>

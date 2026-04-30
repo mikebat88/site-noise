@@ -39,19 +39,16 @@ const ProtectedRoute = ({ children }) => {
         return (
             <div className="main-wrapper" style={{ color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <p style={{ fontFamily: 'Courier New', letterSpacing: '2px' }}>
-                    INITIALIZING SECURE SESSION...
+                    verifying...
                 </p>
             </div>
         );
     }
 
-    // 2. If verification failed, send them to login
-    // We save the 'state' so we know where they were trying to go
     if (!isVerified) {
         return <Navigate to="/admin" state={{ from: location }} replace />;
     }
 
-    // 3. If verified, show the actual admin page
     return children;
 };
 

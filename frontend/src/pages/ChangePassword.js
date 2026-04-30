@@ -1,47 +1,57 @@
+import "./AdminStyleGlobal.css";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./ChangePassword.css"
 
 const ChangePassword = () => {
-    const [credentials, setCredentials] = useState({ username: '', password: '' });
+    const [passwords, setPasswords] = useState({ oldPassword: '', newPassword: '', retypePassword: '' });
     const [message, setMessage] = useState('');
+    const [status, setStatus] = useState('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/admin', { replace: true });
-        }
-    }, [navigate]);
-
     const handleChange = (e) => {
-        setCredentials({ ...credentials, [e.target.name]: e.target.value });
+        setPasswords({ ...passwords, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
+        if (passwords.newPassword != passwords.retypePassword) {
+            setStatus('error');
+            setMessage("Passwords don't match");
+            return;
+        }
+
+        if (passwords.oldPassword == '' || passwords.newPassword == '' || passwords.retypePassword == '') {
+            setStatus('error');
+            setMessage("Fields cannot be empty");
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+
+        console.log(`CHANGE: ${passwords.oldPassword}, ${passwords.newPassword}, ${passwords.retypePassword}`);
+
         try {
-            const response = await fetch('http://localhost:5000/api/login', {
+            const response = await fetch('http://localhost:5000/api/admin/change-password', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(credentials)
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(passwords)
             });
 
             if (response.ok) {
-                const data = await response.json();
-                
-                localStorage.setItem('token', data.token);
-                
+                setStatus('success');
                 setMessage("Password changed successfully");
-                
-                
-                
+                setPasswords({ oldPassword: '', newPassword: '' , retypePassword: ''});
             } else {
-                setMessage('');
+                setStatus('error');
+                const errorData = await response.json();
+                setMessage(errorData.message || 'Update failed');
             }
         } catch (error) {
-            setMessage('Server error.');
+            setMessage('CONNECTION ERROR: Server unreachable');
         }
     };
 
@@ -71,7 +81,11 @@ const ChangePassword = () => {
                     <button type="submit" >Submit</button>
                 </form>
                 <div className="message-container">
-                    {message ? <p>{message}</p> : null}
+                    {message ? (
+                        <p className={`status-msg ${status === 'success' ? 'success-msg' : 'error-msg'}`}>
+                            {message}
+                        </p>
+                    ) : null}
                 </div>
             </div>
         </div>

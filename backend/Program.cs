@@ -120,18 +120,22 @@ app.MapPost("/api/login", async (LoginDto loginDto, AppDbContext db, IConfigurat
 // verify if the admin is logged and whether the token is correct
 app.MapGet("/api/verify", () => Results.Ok()).RequireAuthorization();
 
-/*
+
 app.MapPost("/api/admin/change-password", async (ChangePasswordDto dto, AppDbContext db, HttpContext context) =>
 {
     var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (userIdClaim == null) return Results.Unauthorized();
 
+    Console.WriteLine("pass: {0}", dto.OldPassword);
+
     var userId = int.Parse(userIdClaim);
     var user = await db.Users.FindAsync(userId);
 
-    if (user == null) return Results.NotFound("User not found.");
-
-    if (!BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.PasswordHash))
+    if (user == null) {
+        return Results.NotFound("User not found.");
+    }
+    
+    if (!BCrypt.Net.BCrypt.Verify(dto.OldPassword, user.PasswordHash))
     {
         return Results.BadRequest(new { message = "Current password is incorrect." });
     }
@@ -145,7 +149,7 @@ app.MapPost("/api/admin/change-password", async (ChangePasswordDto dto, AppDbCon
     return Results.Ok(new { message = "Password updated successfully." });
 })
 .RequireAuthorization();
-*/
+
 
 // get all albums from db
 app.MapGet("/api/albums", async (AppDbContext db) =>

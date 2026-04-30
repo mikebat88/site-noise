@@ -1,6 +1,6 @@
 namespace backend.DTOs;
 
 public record ChangePasswordDto (
-    string CurrentPassword,
+    string OldPassword,
     string NewPassword
 );

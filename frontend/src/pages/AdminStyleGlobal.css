@@ -1,8 +1,7 @@
 .main-wrapper {
-    display: flex;
     background-color: #0a0a0a;
     min-height: 100vh;
-    width: 100%;
+
 }
 
 .form {
@@ -48,7 +47,7 @@
 }
 
 .form button {
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     color: black;
     border: none;
     padding: 15px;
@@ -65,9 +64,8 @@
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 }
 
-/* Create a container with a fixed height that doesn't change */
 .message-container {
-    min-height: 50px; /* Adjust this to match your error box height */
+    min-height: 50px;
     width: 100%;
     margin-top: 20px;
     display: flex;
@@ -75,10 +73,7 @@
     justify-content: center;
 }
 
-.form p {
-    background-color: rgba(230, 57, 70, 0.15);
-    color: #e63946;
-    border: 1px solid #e63946;
+.status-msg {
     padding: 10px;
     width: 80%;
     text-align: center;
@@ -87,15 +82,30 @@
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-top: 20px;
-    
-    animation: alert-flash 0.4s ease;
+}
 
-    margin-top: 0;
+.error-msg {
+    background-color: rgba(230, 57, 70, 0.15);
+    color: #e63946;
+    border: 1px solid #e63946;
+    animation: alert-flash 0.4s ease;
+}
+
+.success-msg {
+    background-color: rgba(0, 255, 21, 0.15);
+    color: #24f72f;
+    border: 1px solid #5dff72;
+    animation: success-flash 0.4s ease;
 }
 
 @keyframes alert-flash {
     0% { opacity: 0; transform: scale(0.8); }
     50% { opacity: 1; background-color: rgba(230, 57, 70, 0.4); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes success-flash {
+    0% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 1; background-color: rgba(57, 230, 71, 0.4); }
     100% { opacity: 1; transform: scale(1); }
 }
