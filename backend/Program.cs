@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Models;
-using Data;
-using DTOs;
+using backend.Models;
+using backend.Data;
+using backend.DTOs;
 
 
 string GenerateJwtToken(User user, IConfiguration config)
@@ -77,7 +77,7 @@ using (var scope = app.Services.CreateScope())
         var admin = new User
         {
             Username = "admin",
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword("123"),
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("changeme"),
         };
 
         db.Users.Add(admin);
@@ -97,59 +97,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-/*
-// get all links from db
-app.MapGet("/api/links", async (AppDbContext db) =>
-{
-    return await db.Links.ToListAsync();
-});
-
-// post entry to db
-app.MapPost("/api/links", async (AppDbContext db, LinkCreateDto linkDto) =>
-{
-    var newLink = new Link {
-        Title = linkDto.Title,
-        Url = linkDto.Url,
-        Icon = linkDto.Icon
-    };
-
-    db.Links.Add(newLink);
-    await db.SaveChangesAsync();
-    return Results.Created($"/api/links/{newLink.Id}", newLink);
-})
-.RequireAuthorization();
-
-
-// update entry in db
-app.MapPut("/api/links/{id}", async (int id, LinkCreateDto linkDto, AppDbContext db) =>
-{
-    var link = await db.Links.FindAsync(id);
-
-    if (link is null) return Results.NotFound($"Link with ID {id} not found.");
-
-    link.Title = linkDto.Title;
-    link.Url = linkDto.Url;
-    link.Icon = linkDto.Icon;
-
-    await db.SaveChangesAsync();
-
-    return Results.Ok(link);
-});
-
-// remove entry
-app.MapDelete("/api/links/{id}", async (int id, AppDbContext db) =>
-{
-    var link = await db.Links.FindAsync(id);
-
-    if (link is null) return Results.NotFound($"Link with ID {id} not found.");
-
-    db.Links.Remove(link);
-
-    await db.SaveChangesAsync();
-
-    return Results.Ok(new { message = $"Link {id} deleted successfully." });
-});
-*/
 
 // admin login
 app.MapPost("/api/login", async (LoginDto loginDto, AppDbContext db, IConfiguration config) =>
@@ -158,8 +105,6 @@ app.MapPost("/api/login", async (LoginDto loginDto, AppDbContext db, IConfigurat
 
     if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash))
     {
-        Console.WriteLine("e: " + loginDto.Password +" "+ user.PasswordHash);
-        Console.WriteLine("verify: " + BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash));
         return Results.Unauthorized();
     }
 
@@ -171,5 +116,93 @@ app.MapPost("/api/login", async (LoginDto loginDto, AppDbContext db, IConfigurat
         mustChangePassword = user.MustChangePassword 
     });
 });
+
+app.MapPost("/api/admin/change-password", async (ChangePasswordDto dto, AppDbContext db, HttpContext context) =>
+{
+    // 1. Get the User ID from the JWT Claims
+    // (Assuming you stored 'NameIdentifier' or 'sub' in your token)
+    var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (userIdClaim == null) return Results.Unauthorized();
+
+    var userId = int.Parse(userIdClaim);
+    var user = await db.Users.FindAsync(userId);
+
+    if (user == null) return Results.NotFound("User not found.");
+
+    // 2. Verify the CURRENT password first
+    if (!BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.PasswordHash))
+    {
+        return Results.BadRequest(new { message = "Current password is incorrect." });
+    }
+
+    // 3. Hash and save the NEW password
+    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+    
+    // 4. Update status (if you have a 'MustChangePassword' flag)
+    user.MustChangePassword = false;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { message = "Password updated successfully." });
+})
+.RequireAuthorization(); // Important: Protect this route!
+
+
+// get all albums from db
+app.MapGet("/api/albums", async (AppDbContext db) =>
+{
+    return await db.Albums.ToListAsync();
+});
+
+// post album to db
+app.MapPost("/api/albums", async (AppDbContext db, AddAlbumDTO albumDTO) =>
+{
+    var newAlbum= new Album {
+        Title = albumDTO.Title,
+        Cover = albumDTO.Cover,
+        BuyLink = albumDTO.BuyLink,
+        StreamLink = albumDTO.StreamLink
+    };
+
+    db.Albums.Add(newAlbum);
+    await db.SaveChangesAsync();
+    return Results.Created($"/api/albums/{newAlbum.Id}", newAlbum);
+})
+.RequireAuthorization();
+
+
+// update entry in db
+app.MapPut("/api/albums/{id}", async (int id, AddAlbumDTO albumDTO, AppDbContext db) =>
+{
+    var album = await db.Albums.FindAsync(id);
+
+    if (album is null) return Results.NotFound($"Album with ID {id} not found.");
+
+    album.Title = albumDTO.Title;
+    album.Cover = albumDTO.Cover;
+    album.BuyLink = albumDTO.BuyLink;
+    album.StreamLink = albumDTO.StreamLink;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(album);
+})
+.RequireAuthorization();;
+
+// remove entry
+app.MapDelete("/api/links/{id}", async (int id, AppDbContext db) =>
+{
+    var album = await db.Albums.FindAsync(id);
+
+    if (album is null) return Results.NotFound($"Album with ID {id} not found.");
+
+    db.Albums.Remove(album);
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { message = $"Album \"{album.Title}\" deleted successfully." });
+})
+.RequireAuthorization();;
+
 
 app.Run();

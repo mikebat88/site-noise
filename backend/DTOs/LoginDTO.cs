@@ -1,7 +1,6 @@
-namespace DTOs;
+namespace backend.DTOs;
 
-public class LoginDto
-{
-    public string Username { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-}
+public record LoginDto (
+    string Username,
+    string Password
+);

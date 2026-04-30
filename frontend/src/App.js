@@ -1,24 +1,41 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import "./App.css"
-import Home from './pages/Home';
-import Admin from './pages/Admin';
-import Music from './pages/Music';
-import Contact from './pages/Contact';
-import Navbar from './components/Navbar';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
+import Home from "./pages/Home";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import Music from "./pages/Music";
+import Contact from "./pages/Contact";
+import MainLayout from "./layouts/MainLayout";
+import AdminLayout from "./layouts/AdminLayout";
+import EditAlbums from './pages/EditAlbums';
+import EditShows from './pages/EditShows';
+import EditLatest from './pages/EditLatest';
+import ChangePassword from './pages/ChangePassword';
+
 
 function App() {
   return (
-    <div className='app-wrap'>
-      <Router>
-        <Navbar />
-        <Routes>
+    <Router>
+      <Routes>
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="/music" element={<Music />} />
           <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </Router>
-    </div>
+        </Route>
+
+        {/* LOGIN PAGE (No Layout) */}
+        <Route path="/admin" element={<AdminLogin />} />
+
+        {/* PROTECTED ADMIN ROUTES */}
+        <Route element={<AdminLayout />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/albums-edit" element={<EditAlbums />} />
+          <Route path="/admin/latest-edit" element={<EditLatest />} />
+          <Route path="/admin/shows-edit" element={<EditShows />} />
+          <Route path="/admin/change-password" element={<ChangePassword />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
