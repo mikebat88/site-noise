@@ -96,6 +96,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseStaticFiles();
 
 
 // admin login
@@ -154,21 +155,54 @@ app.MapPost("/api/admin/change-password", async (ChangePasswordDto dto, AppDbCon
 // get all albums from db
 app.MapGet("/api/albums", async (AppDbContext db) =>
 {
-    return await db.Albums.ToListAsync();
+    return await db.Albums
+        .OrderByDescending(a => a.ReleaseDate)
+        .ToListAsync();
 });
 
 // post album to db
-app.MapPost("/api/albums", async (AppDbContext db, AddAlbumDTO albumDTO) =>
+app.MapPost("/api/albums", async (HttpRequest request, AppDbContext db) =>
 {
-    var newAlbum= new Album {
-        Title = albumDTO.Title,
-        Cover = albumDTO.Cover,
-        BuyLink = albumDTO.BuyLink,
-        StreamLink = albumDTO.StreamLink
+
+    var form = await request.ReadFormAsync();
+    
+    string title = form["Title"].ToString();
+    string buyLink = form["BuyLink"].ToString();
+    string streamLink = form["StreamLink"].ToString();
+    
+    if (!DateTime.TryParse(form["ReleaseDate"], out DateTime releaseDate))
+    {
+        releaseDate = DateTime.Now;
+    }
+
+    var file = form.Files["Cover"];
+    string coverPath = "/covers/default.png";
+
+    if (file != null && file.Length > 0)
+    {
+        // Ensure the directory exists
+        var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "covers");
+        if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+
+        var filePath = Path.Combine(folderPath, file.FileName);
+        using var stream = new FileStream(filePath, FileMode.Create);
+        await file.CopyToAsync(stream);
+        
+        coverPath = $"/covers/{file.FileName}";
+    }
+
+    // 4. Create and Save
+    var newAlbum = new Album {
+        Title = title,
+        Cover = coverPath,
+        BuyLink = buyLink,
+        StreamLink = streamLink,
+        ReleaseDate = releaseDate
     };
 
     db.Albums.Add(newAlbum);
     await db.SaveChangesAsync();
+    
     return Results.Created($"/api/albums/{newAlbum.Id}", newAlbum);
 })
 .RequireAuthorization();
@@ -185,6 +219,7 @@ app.MapPut("/api/albums/{id}", async (int id, AddAlbumDTO albumDTO, AppDbContext
     album.Cover = albumDTO.Cover;
     album.BuyLink = albumDTO.BuyLink;
     album.StreamLink = albumDTO.StreamLink;
+    album.ReleaseDate = albumDTO.ReleaseDate;
 
     await db.SaveChangesAsync();
 

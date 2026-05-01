@@ -12,6 +12,7 @@ import EditShows from './pages/EditShows';
 import EditLatest from './pages/EditLatest';
 import ChangePassword from './pages/ChangePassword';
 import ProtectedRoute from "./components/ProtectedRoute";
+import AddAlbum from "./pages/AddAlbum";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
             <Route path="/admin/latest-edit" element={<ProtectedRoute> <EditLatest /> </ProtectedRoute>} />
             <Route path="/admin/shows-edit" element={<ProtectedRoute> <EditShows /> </ProtectedRoute>} />
             <Route path="/admin/change-password" element={<ProtectedRoute> <ChangePassword /> </ProtectedRoute>} />
+            <Route path="/admin/add-album" element={<ProtectedRoute> <AddAlbum /> </ProtectedRoute>} />
         </Route>
       </Routes>
     </Router>

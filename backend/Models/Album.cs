@@ -14,5 +14,7 @@ namespace backend.Models
         public string BuyLink { get; set; } = string.Empty;
         [Required]
         public string StreamLink { get; set; } = string.Empty;
+        [Required]
+        public DateTime ReleaseDate { get; set; }
     }
 }

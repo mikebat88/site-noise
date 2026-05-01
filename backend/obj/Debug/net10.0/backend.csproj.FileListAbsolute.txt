@@ -158,3 +158,4 @@ C:\Users\Yeet\Desktop\noise-website\site-noise\backend\bin\Debug\net10.0\Microso
 C:\Users\Yeet\Desktop\noise-website\site-noise\backend\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Yeet\Desktop\noise-website\site-noise\backend\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Yeet\Desktop\noise-website\site-noise\backend\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Yeet\Desktop\noise-website\site-noise\backend\bin\Debug\net10.0\backend.staticwebassets.runtime.json

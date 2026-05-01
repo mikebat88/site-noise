@@ -28,9 +28,7 @@ const ChangePassword = () => {
         }
 
         const token = localStorage.getItem('token');
-
-        console.log(`CHANGE: ${passwords.oldPassword}, ${passwords.newPassword}, ${passwords.retypePassword}`);
-
+        
         try {
             const response = await fetch('http://localhost:5000/api/admin/change-password', {
                 method: 'POST',

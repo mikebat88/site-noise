@@ -46,6 +46,21 @@
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.form label {
+    color: rgba(255, 255, 255, 0.562);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-left: 5px;
+}
+
 .form button {
     background-color: rgb(255, 255, 255);
     color: black;
