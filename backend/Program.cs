@@ -228,7 +228,7 @@ app.MapPut("/api/albums/{id}", async (int id, AddAlbumDTO albumDTO, AppDbContext
 .RequireAuthorization();;
 
 // remove entry
-app.MapDelete("/api/links/{id}", async (int id, AppDbContext db) =>
+app.MapDelete("/api/albums/{id}", async (int id, AppDbContext db) =>
 {
     var album = await db.Albums.FindAsync(id);
 

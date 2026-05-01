@@ -4,7 +4,13 @@ import "./MusicGridGlobal.css";
 
 
 const AddAlbum = () => {
-    const [form, setForm] = useState({ title: '', buyLink: '', streamLink: '', releaseDate: '' });
+    const initialFormState = { 
+        title: '', 
+        buyLink: '', 
+        streamLink: '', 
+        releaseDate: '' 
+    };
+    const [form, setForm] = useState(initialFormState);
     const [message, setMessage] = useState('');
     const [status, setStatus] = useState(true);
     const [file, setFile] = useState(null);
@@ -50,11 +56,16 @@ const AddAlbum = () => {
             if (response.ok) {
                 setMessage("ALBUM ADDED");
                 setStatus(true);
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } else {
                 setMessage(`SERVER ERROR: ${response.statusText}`);
                 setStatus(false);
             }
         } catch (err) {
+            console.log();
             setMessage("SERVER UNREACHABLE");
             setStatus(false);
         }
@@ -74,7 +85,8 @@ const AddAlbum = () => {
                     />
                     <div className="input-group">
                         <label>Cover Image (JPG/PNG)</label>
-                        <input 
+                        <input
+                            id="cover-input"
                             type="file" 
                             accept="image/*" 
                             onChange={handleFileChange}
