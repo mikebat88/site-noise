@@ -44,7 +44,6 @@ body {
 .album-name {
     margin-top: 15px;
     font-family: 'Courier New', Courier, monospace;
-    text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 1rem;
     color: white;
@@ -114,4 +113,8 @@ body {
     background-color: rgb(155, 155, 155);
     color: white;
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.edit-cover-preview-small {
+    max-width: 200px;
 }

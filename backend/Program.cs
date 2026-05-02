@@ -160,6 +160,20 @@ app.MapGet("/api/albums", async (AppDbContext db) =>
         .ToListAsync();
 });
 
+// get a specific albums from db
+app.MapGet("/api/album/{id}", async (int id, AppDbContext db) =>
+{
+    var album = await db.Albums.FindAsync(id);
+    if (album is not null)
+    {
+        return Results.Ok(album);
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+});
+
 // post album to db
 app.MapPost("/api/albums", async (HttpRequest request, AppDbContext db) =>
 {
@@ -208,26 +222,54 @@ app.MapPost("/api/albums", async (HttpRequest request, AppDbContext db) =>
 .RequireAuthorization();
 
 
-// update entry in db
-app.MapPut("/api/albums/{id}", async (int id, AddAlbumDTO albumDTO, AppDbContext db) =>
+// update album entry in db
+app.MapPut("/api/albums/{id}", async (int id, HttpRequest request, AppDbContext db) =>
 {
     var album = await db.Albums.FindAsync(id);
+    if (album is null) return Results.NotFound();
 
-    if (album is null) return Results.NotFound($"Album with ID {id} not found.");
+    var form = await request.ReadFormAsync();
+    
+    // Update text fields
+    album.Title = form["Title"].ToString();
+    album.BuyLink = form["BuyLink"].ToString();
+    album.StreamLink = form["StreamLink"].ToString();
+    
+    if (DateTime.TryParse(form["ReleaseDate"], out DateTime releaseDate)) album.ReleaseDate = releaseDate;
 
-    album.Title = albumDTO.Title;
-    album.Cover = albumDTO.Cover;
-    album.BuyLink = albumDTO.BuyLink;
-    album.StreamLink = albumDTO.StreamLink;
-    album.ReleaseDate = albumDTO.ReleaseDate;
+    // Handle Image
+    var file = form.Files["Cover"];
+    if (file != null && file.Length > 0)
+    {
+        // 2. Identify the OLD file path
+        if (!string.IsNullOrEmpty(album.Cover))
+        {
+            // Combine the current directory with the relative path from the DB
+            // We trim the leading slash from album.Cover to avoid path errors
+            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", album.Cover.TrimStart('/'));
+
+            // 3. Delete the old file if it exists
+            if (System.IO.File.Exists(oldFilePath))
+            {
+                System.IO.File.Delete(oldFilePath);
+            }
+        }
+        
+        // 2. Save new file
+        var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "covers");
+        var filePath = Path.Combine(folderPath, file.FileName);
+        using var stream = new FileStream(filePath, FileMode.Create);
+        await file.CopyToAsync(stream);
+        
+        album.Cover = $"/covers/{file.FileName}";
+    }
 
     await db.SaveChangesAsync();
-
     return Results.Ok(album);
 })
-.RequireAuthorization();;
+.RequireAuthorization();
 
-// remove entry
+// remove album entry
 app.MapDelete("/api/albums/{id}", async (int id, AppDbContext db) =>
 {
     var album = await db.Albums.FindAsync(id);

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import "./MusicGridGlobal.css";
 
 
-const EditAlbums = () => {
+const ManageAlbums = () => {
     const navigate = useNavigate();
     const [albums, setAlbums] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,7 +14,11 @@ const EditAlbums = () => {
         navigate('/admin/add-album');
     };
 
-    const handleDelete = async () => {
+    const handleEdit = (id) => {
+        navigate(`/admin/edit-album/${id}`);
+    };
+
+    const handleRemove = async () => {
         if (!albumToDelete) return;
 
         try {
@@ -92,7 +96,7 @@ const EditAlbums = () => {
                         <h3 className="album-name">{album.title}</h3>
                         
                         <div className="edit-buttons">
-                            <button onClick={handleAdd}>edit</button>
+                            <button onClick={() => handleEdit(album.id)}>edit</button>
                             <button className="admin-btn remove" onClick={() => openModal(album)}>remove</button>
                         </div>
                     </div>
@@ -107,7 +111,7 @@ const EditAlbums = () => {
                         <p className="album-name-highlight">"{albumToDelete?.title}"</p>
                         
                         <div className="modal-actions">
-                            <button className="button-confirm" onClick={handleDelete}>CONFIRM REMOVAL</button>
+                            <button className="button-confirm" onClick={handleRemove}>CONFIRM REMOVAL</button>
                             <button className="button-cancel" onClick={closeModal}>CANCEL</button>
                         </div>
                     </div>
@@ -117,4 +121,4 @@ const EditAlbums = () => {
     );
 };
 
-export default EditAlbums;
+export default ManageAlbums;

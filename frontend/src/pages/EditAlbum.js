@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import "./MusicGridGlobal.css";
 
 
-const AddAlbum = () => {
+const EditAlbum = () => {
     const initialFormState = { 
         title: '', 
         buyLink: '', 
@@ -15,6 +15,8 @@ const AddAlbum = () => {
     const [status, setStatus] = useState(true);
     const [file, setFile] = useState(null);
     const navigate = useNavigate();
+    const { id } = useParams();
+    const [existingCoverPath, setExistingCoverPath] = useState("");
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,81 +28,86 @@ const AddAlbum = () => {
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
-
-        if (!form.title || !file || !form.buyLink || !form.streamLink || !form.releaseDate) {
-            setMessage("FIELDS CANNOT BE EMPTY");
-            setStatus(false);
-            return;
-        }
 
         const token = localStorage.getItem('token');
 
-        try {
-            const formData = new FormData();
-            formData.append("Title", form.title);
+        const formData = new FormData();
+        formData.append("Title", form.title);
+        formData.append("BuyLink", form.buyLink);
+        formData.append("StreamLink", form.streamLink);
+        formData.append("ReleaseDate", form.releaseDate);
+        
+        // Only append the file if the user actually picked a new one
+        if (file) {
             formData.append("Cover", file);
-            formData.append("BuyLink", form.buyLink);
-            formData.append("StreamLink", form.streamLink);
-            formData.append("ReleaseDate", form.releaseDate);
-    
-            const response = await fetch('http://localhost:5000/api/albums', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                body: formData
-            });
-
-            if (response.ok) {
-                setMessage("ALBUM ADDED");
-                setStatus(true);
-
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-            } else {
-                setMessage(`SERVER ERROR: ${response.statusText}`);
-                setStatus(false);
-            }
-        } catch (err) {
-            setMessage("SERVER UNREACHABLE");
-            setStatus(false);
         }
 
+        const response = await fetch(`http://localhost:5000/api/albums/${id}`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: formData
+        });
+        
+        if (response.ok) {
+            setStatus(true);
+            setMessage("ALBUM CHANGE SAVED");
+
+            setTimeout(() => {
+                navigate('/admin/albums-edit');
+            }, 2000);
+        }
     };
+
+    useEffect(() => {
+        const fetchAlbum = async () => {
+            const response = await fetch(`http://localhost:5000/api/album/${id}`);
+            const data = await response.json();
+            setExistingCoverPath(data.cover);
+            setForm({
+                title: data.title,
+                buyLink: data.buyLink,
+                streamLink: data.streamLink,
+                releaseDate: data.releaseDate.split('T')[0]
+            });
+
+            console.log(`GAKJBAG ${data.title}`)
+        };
+
+        if (id) fetchAlbum();
+    }, [id]);
 
     return (
         <div className="main-wrapper">
             <div className="form">
-                <h2>add album</h2>
-                <form onSubmit={handleSubmit}>
-                    <input 
+                <h2>edit album</h2>
+                <form onSubmit={handleUpdate}>
+                    <   input 
                         name="title"
                         type="text"
+                        value={form.title || ''}
                         placeholder="title" 
                         onChange={handleChange} 
                     />
                     <div className="input-group">
-                        <label>Cover Image (JPG/PNG)</label>
-                        <input
-                            id="cover-input"
-                            type="file" 
-                            accept="image/*" 
-                            onChange={handleFileChange}
-                            className="form-input" 
-                        />
+                        <label>current cover</label>
+                        <img src={`http://localhost:5000${existingCoverPath}`} className="edit-cover-preview-small" />
+                        
+                        <label>upload new (optional)</label>
+                        <input type="file" onChange={handleFileChange} />
                     </div>
                     <input 
                         name="buyLink"
                         type="text"
+                        value={form.buyLink || ''}
                         placeholder="buy link" 
                         onChange={handleChange} 
                     />
                     <input 
                         name="streamLink" 
                         type="text" 
+                        value={form.streamLink || ''}
                         placeholder="stream link" 
                         onChange={handleChange} 
                     />
@@ -109,6 +116,7 @@ const AddAlbum = () => {
                         <input
                             name="releaseDate"
                             type="date"
+                            value={form.releaseDate || ''}
                             placeholder="release date" 
                             onChange={handleChange} 
                         />
@@ -127,4 +135,4 @@ const AddAlbum = () => {
     );
 };
 
-export default AddAlbum;
+export default EditAlbum;
