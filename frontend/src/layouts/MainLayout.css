@@ -1,9 +1,61 @@
-.main-container {
-    background-color: #0a0a0a;
+/** {
+    outline: 1px solid red;
+} */  
+
+.app-wrapper {
+  position: relative;
+  min-height: 200vh;
+  background-color: #0a0a0a;
 }
 
+.bg-video-container {
+  position: fixed;
+  top: 0;
+  width: 15vw;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.bg-video-container.left { left: 0; }
+.bg-video-container.right { right: 0; }
+
+.bg-video-container video {
+  width: 100%;
+  min-height: 100%;
+  object-fit: cover ;
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+  filter: blur(4px) grayscale(30%);
+}
+
+.main-content {
+  position: relative;
+  z-index: 2;
+  width: 60vw;
+  margin: 0 auto;
+  background-color: #0a0a0a;
+  min-height: 100vh;
+}
+/*
 .content {
     background-color: #0a0a0a;
     min-height: 100vh;
     width: 100%;
+}*/
+
+.content {
+  width: 60vw;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+@media (max-width: 900px) {
+  .bg-video-container {
+    display: none;
+  }
+  .main-content {
+    width: 100vw;
+  }
 }

@@ -50,11 +50,11 @@ body {
 }
 
 .album-links {
-    margin-left: 32px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    justify-items: center; 
+    align-items: center;
+    width: 70%;
     margin-top: 10px;
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.1rem;
@@ -68,7 +68,10 @@ body {
 }
 
 .album-links a:hover {
-    text-shadow: 0 0 30px rgba(255, 175, 3, 0.699);
+    text-shadow: 
+        0 0 10px rgb(255, 255, 255, 0.8), 
+        0 0 30px rgb(255, 199, 78), 
+        0 0 50px rgba(255, 199, 78);
 }
 
 .separator {

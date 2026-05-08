@@ -1,0 +1,64 @@
+.contact-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+}
+
+.contact-container h1 {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 3rem;
+    text-transform: none;
+    margin: 40px 0;
+}
+
+.blink {
+  animation: blink-animation 1s steps(2, start) 1s infinite;
+}
+
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
+.contact-items {
+    border: 1px solid white;
+
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin: 20px;
+}
+
+.contact-icon {
+    margin: 10px;
+    font-size: 2.2rem;
+    text-decoration: none;
+    color: white;
+}
+
+.contact-icon.email {
+    font-size: 2.7rem;
+    margin-left: 5px;
+}
+
+.contact-item p {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.3rem;
+    color: white;
+}
+
+@media (max-width: 600px) {
+    .contact-container h1 {
+        font-size: 2rem;
+    }
+
+    .contact-items p {
+        font-size: 0.9rem;
+    }
+}
+
