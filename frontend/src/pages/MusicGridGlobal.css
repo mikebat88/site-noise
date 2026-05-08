@@ -14,7 +14,7 @@ body {
     grid-template-columns: 1fr 1fr; 
     gap: 90px;
     width: 90%;
-    max-width: 600px;
+    max-width: 800px;
     margin: 40px auto; 
     padding: 20px;
 }
@@ -45,14 +45,19 @@ body {
     margin-top: 15px;
     font-family: 'Courier New', Courier, monospace;
     letter-spacing: 2px;
-    font-size: 1rem;
+    font-size: 1.3rem;
     color: white;
 }
 
 .album-links {
+    margin-left: 32px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
     margin-top: 10px;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 0.8rem;
+    font-size: 1.1rem;
     letter-spacing: 1px;
 }
 

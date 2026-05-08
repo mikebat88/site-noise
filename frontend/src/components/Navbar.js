@@ -4,14 +4,16 @@ import { FaInstagram, FaSpotify, FaYoutube } from 'react-icons/fa';
 import { ReactComponent as BandcampIcon } from '../assets/bandcamp.svg';
 import { ReactComponent as AppleMusicIcon } from '../assets/apple-music.svg';
 import { ReactComponent as YoutubeMusicIcon } from '../assets/youtube-music.svg';
+import BandLogo from "../assets/pop.png";
+import BandTitle from "../assets/text.png";
 import "./Navbar.css";
 
 const Navbar = () => {
   return (
     <nav className="main-nav">
       <NavLink to="/" className="nav-logo-link">
-        <img src="/path-to-your-logo.png" alt="Band Logo" className="nav-logo" />
-        <h1 className="nav-title">NO/SE</h1>
+        <img src={BandLogo} alt="Band Logo" className="nav-logo" />
+        <img src={BandTitle} alt="Band Title" className="nav-title" />
       </NavLink>
 
       <div className="social-links">
