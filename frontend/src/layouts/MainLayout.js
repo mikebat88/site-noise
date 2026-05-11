@@ -1,4 +1,3 @@
-// src/layouts/MainLayout.js
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -7,13 +6,15 @@ import './MainLayout.css';
 import vid1 from '../assets/vid1.webm';
 import vid2 from '../assets/vid2.webm';
 
+{/*autoPlay
+          loop*/}
+
 const MainLayout = () => {
   return (
     <div className="app-wrapper">
       <div className="bg-video-container left">
         <video src={vid1}
-          autoPlay
-          loop
+          
           muted
           playsInline
           disablePictureInPicture
@@ -23,8 +24,7 @@ const MainLayout = () => {
       </div>
       <div className="bg-video-container right">
         <video src={vid2}
-          autoPlay
-          loop
+
           muted
           playsInline
           disablePictureInPicture

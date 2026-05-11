@@ -25,7 +25,6 @@ const Navbar = () => {
         <a href="https://open.spotify.com/artist/4sJ1Pk4J3AfYo3Yg9r7Z3n" target="_blank" rel="noreferrer"><FaSpotify /></a>
       </div>
 
-      {/* 3. BOTTOM SECTION: PAGE NAV */}
       <div className="page-links">
         <NavLink to="/music">music</NavLink>
         <NavLink to="/contact">contact</NavLink>
