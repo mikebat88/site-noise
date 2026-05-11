@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import EventsBox from "../components/EventsBox";
+import "./Home.css";
 
 const Home = () => {
 	return (
@@ -9,8 +11,11 @@ const Home = () => {
 				<h1>latest</h1>
 			</div>
 
-			<div className="upcoming-shows">
-				<h1>UPCOMING SHOWS</h1>
+			<div className="upcoming-events">
+				<h1>UPCOMING EVENTS</h1>
+
+				<div className="events"> <EventsBox /> </div>
+
 			</div>
 		
 
