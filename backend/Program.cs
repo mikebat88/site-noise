@@ -160,7 +160,7 @@ app.MapGet("/api/albums", async (AppDbContext db) =>
         .ToListAsync();
 });
 
-// get a specific albums from db
+// get a specific album from db
 app.MapGet("/api/album/{id}", async (int id, AppDbContext db) =>
 {
     var album = await db.Albums.FindAsync(id);
@@ -281,6 +281,96 @@ app.MapDelete("/api/albums/{id}", async (int id, AppDbContext db) =>
     await db.SaveChangesAsync();
 
     return Results.Ok(new { message = $"Album \"{album.Title}\" deleted successfully." });
+})
+.RequireAuthorization();;
+
+// get all events from db
+app.MapGet("/api/events", async (AppDbContext db) =>
+{
+    return await db.Events
+        .OrderByDescending(a => a.Date)
+        .ToListAsync();
+});
+
+// get a specific event from db
+app.MapGet("/api/events/{id}", async (int id, AppDbContext db) =>
+{
+    var eventt = await db.Events.FindAsync(id);
+    if (eventt is not null)
+    {
+        return Results.Ok(eventt);
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+});
+
+// post event to db
+app.MapPost("/api/events", async (HttpRequest request, AppDbContext db) =>
+{
+
+    var form = await request.ReadFormAsync();
+    
+    string venue = form["Venue"].ToString();
+    string city = form["City"].ToString();
+    string infoText = form["InfoText"].ToString();
+    string infoLink = form["InfoLink"].ToString();
+    
+    if (!DateTime.TryParse(form["Date"], out DateTime date))
+    {
+        date = DateTime.Now;
+    }
+
+    var newEvent = new Event {
+        Date = date,
+        Venue = venue,
+        City = city,
+        InfoText = infoText,
+        InfoLink = infoLink
+    };
+
+    db.Events.Add(newEvent);
+    await db.SaveChangesAsync();
+    
+    return Results.Created($"/api/albums/{newEvent.Id}", newEvent);
+})
+.RequireAuthorization();
+
+
+// update event entry in db
+app.MapPut("/api/events/{id}", async (int id, HttpRequest request, AppDbContext db) =>
+{
+    var eventt = await db.Events.FindAsync(id);
+    if (eventt is null) return Results.NotFound();
+
+    var form = await request.ReadFormAsync();
+    
+    // Update text fields
+    eventt.Venue = form["Venue"].ToString();
+    eventt.City = form["City"].ToString();
+    eventt.InfoText = form["InfoText"].ToString();
+    eventt.InfoLink = form["InfoLink"].ToString();
+    
+    if (DateTime.TryParse(form["Date"], out DateTime date)) eventt.Date = date;
+
+    await db.SaveChangesAsync();
+    return Results.Ok(eventt);
+})
+.RequireAuthorization();
+
+// remove album entry
+app.MapDelete("/api/events/{id}", async (int id, AppDbContext db) =>
+{
+    var eventt = await db.Events.FindAsync(id);
+
+    if (eventt is null) return Results.NotFound($"Event with ID {id} not found.");
+
+    db.Events.Remove(eventt);
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { message = $"Event on \"{eventt.Date}\" at \"{eventt.Venue}\" deleted successfully." });
 })
 .RequireAuthorization();;
 

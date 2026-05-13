@@ -8,7 +8,7 @@ const Dashboard = () => {
             <nav className="admin-sidebar">
                 <NavLink to="/admin/albums-edit">edit albums</NavLink>
                 <NavLink to="/admin/latest-edit">edit latest</NavLink>
-                <NavLink to="/admin/shows-edit">edit shows</NavLink>
+                <NavLink to="/admin/events-edit">edit shows</NavLink>
                 <NavLink to="/admin/change-password">change password</NavLink>
             </nav>
         </div>
