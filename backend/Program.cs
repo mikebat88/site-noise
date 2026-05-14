@@ -333,7 +333,7 @@ app.MapPost("/api/events", async (HttpRequest request, AppDbContext db) =>
     db.Events.Add(newEvent);
     await db.SaveChangesAsync();
     
-    return Results.Created($"/api/albums/{newEvent.Id}", newEvent);
+    return Results.Created($"/api/events/{newEvent.Id}", newEvent);
 })
 .RequireAuthorization();
 
@@ -372,7 +372,116 @@ app.MapDelete("/api/events/{id}", async (int id, AppDbContext db) =>
 
     return Results.Ok(new { message = $"Event on \"{eventt.Date}\" at \"{eventt.Venue}\" deleted successfully." });
 })
-.RequireAuthorization();;
+.RequireAuthorization();
+
+// get all updates from db
+app.MapGet("/api/latest", async (AppDbContext db) =>
+{
+    return await db.LatestUpdates
+        .OrderByDescending(a => a.CreatedAt)
+        .ToListAsync();
+});
+
+// get a specific update from db
+app.MapGet("/api/latest/{id}", async (int id, AppDbContext db) =>
+{
+    var latest = await db.LatestUpdates.FindAsync(id);
+    if (latest is not null)
+    {
+        return Results.Ok(latest);
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+});
+
+// post update to db
+app.MapPost("/api/latest", async (HttpRequest request, AppDbContext db) =>
+{
+
+    var form = await request.ReadFormAsync();
+    
+    string title = form["Title"].ToString();
+    string type = form["Type"].ToString();
+    string? content = form["Content"].ToString();
+    string? mediaUrl = form["MediaUrl"].ToString();
+    
+    if (string.IsNullOrWhiteSpace(content))
+    {
+        content = null;
+    }
+
+    if (string.IsNullOrWhiteSpace(mediaUrl))
+    {
+        mediaUrl = null;
+    }
+
+    var newLatest = new LatestUpdate
+    {
+        Title = title,
+        Content = content,
+        Type = type,
+        MediaUrl = mediaUrl
+    };
+
+    db.LatestUpdates.Add(newLatest);
+    await db.SaveChangesAsync();
+    
+    return Results.Created($"/api/latest/{newLatest.Id}", newLatest);
+})
+.RequireAuthorization();
+
+
+// update latest update entry in db
+app.MapPut("/api/latest/{id}", async (int id, HttpRequest request, AppDbContext db) =>
+{
+    var latest = await db.LatestUpdates.FindAsync(id);
+    if (latest is null) return Results.NotFound();
+
+    var form = await request.ReadFormAsync();
+    
+    // Update text fields
+    latest.Title = form["Title"].ToString();
+    latest.Type = form["Type"].ToString();
+    string? content = form["Content"].ToString();
+    string? mediaUrl = form["MediaUrl"].ToString();
+    
+    latest.MediaUrl = string.IsNullOrWhiteSpace(mediaUrl) ? null : mediaUrl;
+    latest.Content = string.IsNullOrWhiteSpace(content) ? null : content;
+
+    await db.SaveChangesAsync();
+    return Results.Ok(latest);
+})
+.RequireAuthorization();
+
+// update the IsVisible check only
+app.MapPut("/api/latest/{id}/toggle-visible", async (int id, AppDbContext db) =>
+{
+    var latest = await db.LatestUpdates.FindAsync(id);
+    if (latest == null) return Results.NotFound();
+
+    latest.IsVisible = !latest.IsVisible;
+    await db.SaveChangesAsync();
+
+    return Results.Ok(latest);
+})
+.RequireAuthorization();
+
+// remove update entry
+app.MapDelete("/api/latest/{id}", async (int id, AppDbContext db) =>
+{
+    var latest = await db.LatestUpdates.FindAsync(id);
+
+    if (latest is null) return Results.NotFound($"Update with ID {id} not found.");
+
+    db.LatestUpdates.Remove(latest);
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { message = $"Update \"{latest.Title}\" deleted successfully." });
+})
+.RequireAuthorization();
 
 
 app.Run();

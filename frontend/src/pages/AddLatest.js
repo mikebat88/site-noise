@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { data, Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "./MusicGridGlobal.css";
 
 
-const EditLatest = () => {
+const AddLatest = () => {
     const initialFormState = { 
         date: '', 
         venue: '', 
@@ -15,62 +15,61 @@ const EditLatest = () => {
     const [message, setMessage] = useState('');
     const [status, setStatus] = useState(true);
     const navigate = useNavigate();
-    const { id } = useParams();
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleUpdate = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!form.date || !form.venue || !form.city || !form.infoText || !form.infoLink) {
+            setMessage("FIELDS CANNOT BE EMPTY");
+            setStatus(false);
+            return;
+        }
 
         const token = localStorage.getItem('token');
 
-        const formData = new FormData();
-        formData.append("Date", form.date);
-        formData.append("Venue", form.venue);
-        formData.append("City", form.city);
-        formData.append("infoText", form.infoText);
-        formData.append("infoLink", form.infoLink);
-
-        const response = await fetch(`http://localhost:5000/api/events/${id}`, {
-            method: 'PUT',
-            headers: { 'Authorization': `Bearer ${token}` },
-            body: formData
-        });
-        
-        if (response.ok) {
-            setStatus(true);
-            setMessage("EVENT CHANGE SAVED");
-
-            setTimeout(() => {
-                navigate('/admin/events-edit');
-            }, 2000);
-        }
-    };
-
-    useEffect(() => {
-        const fetchEvent = async () => {
-            const response = await fetch(`http://localhost:5000/api/events/${id}`);
-            const data = await response.json();
-            
-            setForm({
-                date: data.date.split("T")[0],
-                venue: data.venue,
-                city: data.city,
-                infoText: data.infoText,
-                infoLink: data.infoLink
+        try {
+            const formData = new FormData();
+            formData.append("Date", form.date);
+            formData.append("Venue", form.venue);
+            formData.append("City", form.city);
+            formData.append("InfoText", form.infoText);
+            formData.append("InfoLink", form.infoLink);
+    
+            const response = await fetch('http://localhost:5000/api/events', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
             });
-        };
 
-        if (id) fetchEvent();
-    }, [id]);
+            if (response.ok) {
+                setMessage("SHOW ADDED");
+                setStatus(true);
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                setMessage(`SERVER ERROR: ${response.statusText}`);
+                setStatus(false);
+            }
+        } catch (err) {
+            setMessage("SERVER UNREACHABLE");
+            setStatus(false);
+        }
+
+    };
 
     return (
         <div className="main-wrapper">
             <div className="form">
-                <h2>edit shows</h2>
-                <form onSubmit={handleUpdate}>
+                <h2>add show</h2>
+                <form onSubmit={handleSubmit}>
                     <div className="input-group">
                         <label>date</label>
                         <input
@@ -99,14 +98,14 @@ const EditLatest = () => {
                         name="infoText" 
                         type="text" 
                         value={form.infoText || ''}
-                        placeholder="infoText" 
+                        placeholder="info text" 
                         onChange={handleChange} 
                     />
                     <input 
                         name="infoLink" 
                         type="text" 
                         value={form.infoLink || ''}
-                        placeholder="infoLink" 
+                        placeholder="info link" 
                         onChange={handleChange} 
                     />
                     <button type="submit" >Submit</button>
@@ -123,4 +122,4 @@ const EditLatest = () => {
     );
 };
 
-export default EditLatest;
+export default AddLatest;

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import "./MusicGridGlobal.css";
 
 
-const AddAlbum = () => {
+const AddEvent = () => {
     const initialFormState = { 
         date: '', 
         venue: '', 
@@ -122,4 +122,4 @@ const AddAlbum = () => {
     );
 };
 
-export default AddAlbum;
+export default AddEvent;

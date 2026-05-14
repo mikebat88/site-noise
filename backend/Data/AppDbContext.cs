@@ -9,4 +9,5 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Album> Albums { get; set; }
     public DbSet<Event> Events { get; set; }
+    public DbSet<LatestUpdate> LatestUpdates { get; set; }
 }
