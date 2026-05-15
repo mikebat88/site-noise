@@ -91,7 +91,7 @@ const ManageEvents = () => {
                 {loading ? (
                     <p className="status-message">LOADING DATABASE...</p>
                 ) : events.length == 0 ? (  
-                    <div className="empty-state">
+                    <div className="empty-state events">
                         <p>no events currently planned</p>
                     </div>
                 ) : (

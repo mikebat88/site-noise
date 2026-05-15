@@ -107,4 +107,12 @@
   .main-nav::before {
     background-size: 100% 2.5px;
   }
+
+  .nav-logo-link {
+    width: 60%;
+  }
+
+  .main-nav:after {
+    width: 90%; 
+}
 }

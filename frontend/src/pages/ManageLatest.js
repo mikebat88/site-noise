@@ -166,11 +166,10 @@ const ManageLatest = () => {
                                     />
                                     <span className="status-text">[ {update.isVisible ? "ACTIVE" : "HIDDEN"} ]</span>
                                 </label>
-                            </div>
-
-                            <div className="edit-buttons svg">
-                                <button onClick={() => handleEdit(update.id)}> <EditIcon /> </button>
-                                <button className="admin-btn remove" onClick={() => openModal(update)}> <TrashIcon /> </button>
+                                <div className="edit-buttons svg">
+                                    <button onClick={() => handleEdit(update.id)}> <EditIcon /> </button>
+                                    <button className="admin-btn remove" onClick={() => openModal(update)}> <TrashIcon /> </button>
+                                </div>
                             </div>
                         </div>
                     ))}

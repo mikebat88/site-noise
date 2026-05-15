@@ -126,7 +126,7 @@
 }
 
 .empty-state {
-    margin-top: 200px;
+    margin: 200px 0;
     font-family: 'Courier New', Courier, monospace;
     color: white;
     font-size: 1.1rem;
@@ -235,4 +235,12 @@
     background-color: rgba(0, 0, 0, 0);
     color: white;
     font-size: 1.2rem;
+}
+
+.updates-list.manage {
+    
+}
+
+.updates-table.manage {
+
 }
