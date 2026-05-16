@@ -106,7 +106,7 @@ const Latest = () => {
                 ) : (
                     <div className="updates-table">
                         {latest.map((update) => (
-                        <div key={update.id} className="update-row">
+                        <div className="update-row">
 
                             <div className={`latest-card ${update.type.toLowerCase()}   `}>
                                 <span className="timestamp">{formatDate(update.createdAt)}</span>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as EditIcon } from '../assets/edit.svg';
 import { ReactComponent as TrashIcon } from '../assets/trash.svg';
+import YoutoubeIdExtractor from "../components/YoutubeIdExtractor.js";
 import "./AdminStyleGlobal.css";
 
 const ManageLatest = () => {
@@ -20,10 +21,30 @@ const ManageLatest = () => {
         return formatted;
     };
 
+    const YoutubePreview = ({update}) => {
+        return (
+            <div className="video-preview-container">
+                <a 
+                    href={update.mediaUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="admin-thumb-link"
+                    title="open on youtube"
+                >
+                    <img 
+                        src={`https://img.youtube.com/vi/${YoutoubeIdExtractor({ link: update.mediaUrl })}/mqdefault.jpg`} 
+                        alt="watch on youtube" 
+                        className="admin-mini-thumb"
+                    />
+                </a>
+            </div>
+        )
+    }
+
     const renderMedia = (update) => {
         switch (update.type) {
             case 'VIDEO':
-                return <iframe src={update.mediaUrl} title="video" />;
+                return < YoutubePreview update={update} />
             case 'IMAGE':
                 return <img src={update.mediaUrl} alt={update.title} />;
             case 'TEXT':
@@ -101,7 +122,7 @@ const ManageLatest = () => {
             "id": 2,
             "title": "title2",
             "content": "",
-            "mediaUrl": "https://www.youtube.com/watch?v=NcOwTceSbH4",
+            "mediaUrl": "https://www.youtube.com/watch?v=RB6bnPBox_w&t=7307s",
             "type": "VIDEO",
             "createdAt": "2026-05-12",
             "isVisible": false
@@ -110,7 +131,7 @@ const ManageLatest = () => {
             "id": 3,
             "title": "title3",
             "content": "kllkad dalkdafkl adflkfafalk adll",
-            "mediaUrl": "city.jpg",
+            "mediaUrl": "../assets/city.jpg",
             "type": "IMAGE",
             "createdAt": "2026-05-16",
             "isVisible": false
@@ -149,26 +170,32 @@ const ManageLatest = () => {
                         <p>no news currently added</p>
                     </div>
                 ) : (
-                    <div className="updates-table">
+                    <div className="updates-table manage">
                         {latest.map((update) => (
                         <div key={update.id} className="update-row manage">
 
                             <div className={`latest-card ${update.type.toLowerCase()} manage`}>
                                 <span className="timestamp">{formatDate(update.createdAt)}</span>
                                 <h3>{update.title}</h3>
-                                {renderMedia(update)}
-                                <p>{update.content}</p>
-                                <label className="is-visible-toggle">
-                                    <input 
-                                        type="checkbox" 
-                                        checked={update.isVisible} 
-                                        onChange={() => toggleVisibility(update.id)} 
-                                    />
-                                    <span className="status-text">[ {update.isVisible ? "ACTIVE" : "HIDDEN"} ]</span>
-                                </label>
-                                <div className="edit-buttons svg">
-                                    <button onClick={() => handleEdit(update.id)}> <EditIcon /> </button>
-                                    <button className="admin-btn remove" onClick={() => openModal(update)}> <TrashIcon /> </button>
+                                <div className="content-after-title">
+                                    {renderMedia(update)}
+                                    <p>{update.content}</p>
+                                    
+                                    <div className="row-buttons">
+                                        <label className="is-visible-toggle">
+                                            <input 
+                                                type="checkbox" 
+                                                checked={update.isVisible} 
+                                                onChange={() => toggleVisibility(update.id)} 
+                                            />
+                                            <span className="status-text">[ {update.isVisible ? "ACTIVE" : "HIDDEN"} ]</span>
+                                        </label>
+                                        <div className="edit-buttons svg">
+                                            <button onClick={() => handleEdit(update.id)}> <EditIcon /> </button>
+                                            <button className="admin-btn remove" onClick={() => openModal(update)}> <TrashIcon /> </button>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

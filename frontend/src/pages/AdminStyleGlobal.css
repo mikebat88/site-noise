@@ -237,10 +237,16 @@
     font-size: 1.2rem;
 }
 
-.updates-list.manage {
-    
+.updates-table.manage {
+    width: 50%;
 }
 
-.updates-table.manage {
+.content-after-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 
+.video-preview-container img {
+    height: 100px;
 }
