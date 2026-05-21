@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as EditIcon } from '../assets/edit.svg';
 import { ReactComponent as TrashIcon } from '../assets/trash.svg';
 import YoutoubeIdExtractor from "../components/YoutubeIdExtractor.js";
+import CityImage from '../assets/city.jpg';
 import "./AdminStyleGlobal.css";
 
 const ManageLatest = () => {
-    //const [latest, setLatest] = useState([]);
+    const [latest, setLatest] = useState([]);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -46,7 +47,7 @@ const ManageLatest = () => {
             case 'VIDEO':
                 return < YoutubePreview update={update} />
             case 'IMAGE':
-                return <img src={update.mediaUrl} alt={update.title} />;
+                return <img src={CityImage} alt={update.title} />;
             case 'TEXT':
                 default:
                 return null;
@@ -62,7 +63,6 @@ const ManageLatest = () => {
     };
 
     const handleRemove = async () => {
-        /*
         if (!updateToDelete) return;
 
         try {
@@ -83,7 +83,7 @@ const ManageLatest = () => {
         } catch (error) {
             console.error("Delete failed:", error);
         }
-*/
+
         return;
     };
 
@@ -108,36 +108,6 @@ const ManageLatest = () => {
     };
 
 
-    const [latest, setLatest] = useState([
-        {
-            "id": 1,
-            "title": "title1",
-            "content": "kmbklnbknlsdkndsgklnsd nllnasdnlda nladsnlads lsanklgdskngsdnkl",
-            "mediaUrl": null,
-            "type": "TEXT",
-            "createdAt": "2026-05-14",
-            "isVisible": true
-        },
-        {
-            "id": 2,
-            "title": "title2",
-            "content": "",
-            "mediaUrl": "https://www.youtube.com/watch?v=RB6bnPBox_w&t=7307s",
-            "type": "VIDEO",
-            "createdAt": "2026-05-12",
-            "isVisible": false
-        },
-        {
-            "id": 3,
-            "title": "title3",
-            "content": "kllkad dalkdafkl adflkfafalk adll",
-            "mediaUrl": "../assets/city.jpg",
-            "type": "IMAGE",
-            "createdAt": "2026-05-16",
-            "isVisible": false
-        }
-    ]);
-/*
     useEffect(() => {
             const fetchAlbums = async () => {
                 try {
@@ -149,14 +119,14 @@ const ManageLatest = () => {
                     setLatest(sorted);
                     setLoading(false);
                 } catch (error) {
-                    console.error("Failed to fetch events:", error);
+                    console.error("Failed to fetch updates:", error);
                     setLoading(false);
                 }
             };
     
             fetchAlbums();
         }, []);
-*/
+
     return (
         <div className="main-container">
             

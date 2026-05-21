@@ -1,5 +1,12 @@
+:root {
+    --background-color: #0a0a0a;
+    --text-color-gray: rgba(255, 255, 255, 0.562);
+    --form-border: #333333;
+    --form-background: #111111;
+}
+
 .main-wrapper {
-    background-color: #0a0a0a;
+    background-color: var(--background-color);
     min-height: 100vh;
 }
 
@@ -31,8 +38,8 @@
 }
 
 .form input {
-    background-color: #111;
-    border: 1px solid #333;
+    background-color: var(--form-background);
+    border: 1px solid var(--form-border);
     color: white;
     padding: 15px;
     font-family: 'Courier New', Courier, monospace;
@@ -54,7 +61,7 @@
 }
 
 .form label {
-    color: rgba(255, 255, 255, 0.562);
+    color: var(--text-color-gray);
     font-family: 'Courier New', Courier, monospace;
     font-size: 0.8rem;
     letter-spacing: 1px;
@@ -148,8 +155,8 @@
 }
 
 .modal-content {
-    background: #0a0a0a;
-    border: 1px solid #333;
+    background: var(--background-color);
+    border: 1px solid var(--form-border);
     padding: 30px;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
@@ -247,6 +254,58 @@
     justify-content: space-between;
 }
 
+.content-after-title img {
+    height: 100px;
+}
+
 .video-preview-container img {
     height: 100px;
+}
+
+.row-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.is-visible-toggle {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.form textarea {
+    background-color: var(--form-background);
+    border-color: var(--form-border);
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.form textarea:focus {
+    border-color: white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.input-group select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    background-color: var(--form-background);
+    color: white;
+    border: 1px solid var(--form-border);
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
+
+    padding-right: 40px; 
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='white' d='M0,3 L5,8 L10,3 Z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 15px) center;
+    background-size: 12px;
 }

@@ -4,22 +4,29 @@ import "./MusicGridGlobal.css";
 
 
 const EditLatest = () => {
-    const initialFormState = { 
-        date: '', 
-        venue: '', 
-        city: '', 
-        infoText: '', 
-        infoLink: '' 
+     const initialFormState = { 
+        title: "", 
+        type: "TEXT",
+        content: "", 
+        mediaUrl: "", 
     };
     const [form, setForm] = useState(initialFormState);
     const [message, setMessage] = useState('');
     const [status, setStatus] = useState(true);
+    const [file, setFile] = useState(null);
     const navigate = useNavigate();
     const { id } = useParams();
+    const [existingImagePath, setExistingImagePath] = useState("");
+
+    const handleFileChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setFile(e.target.files[0]);
+        }
+    };
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
-    };
+    };  
 
     const handleUpdate = async (e) => {
         e.preventDefault();
@@ -27,13 +34,26 @@ const EditLatest = () => {
         const token = localStorage.getItem('token');
 
         const formData = new FormData();
-        formData.append("Date", form.date);
-        formData.append("Venue", form.venue);
-        formData.append("City", form.city);
-        formData.append("infoText", form.infoText);
-        formData.append("infoLink", form.infoLink);
+        formData.append("Title", form.title);
+        formData.append("Type", form.type);
 
-        const response = await fetch(`http://localhost:5000/api/events/${id}`, {
+        if (form.content == null) {
+                formData.append("Content", "");
+            } else {
+                formData.append("Content", form.content);
+            }
+        
+        if (form.type == "IMAGE") {
+            // only append the file if the user actually picked a new one
+            if (file) {
+                formData.append("Cover", file);
+            }
+        } else {
+            formData.append("MediaUrl", form.mediaUrl);
+        }
+
+
+        const response = await fetch(`http://localhost:5000/api/latest/${id}`, {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}` },
             body: formData
@@ -41,25 +61,28 @@ const EditLatest = () => {
         
         if (response.ok) {
             setStatus(true);
-            setMessage("EVENT CHANGE SAVED");
+            setMessage("NEWS UPDATE CHANGE SAVED");
 
             setTimeout(() => {
-                navigate('/admin/events-edit');
+                navigate('/admin/latest-edit');
             }, 2000);
         }
     };
 
     useEffect(() => {
         const fetchEvent = async () => {
-            const response = await fetch(`http://localhost:5000/api/events/${id}`);
+            const response = await fetch(`http://localhost:5000/api/latest/${id}`);
             const data = await response.json();
             
+            if (data.type == "IMAGE" || data.type == "VIDEO") {
+                setExistingImagePath(data.mediaUrl);
+                
+            }
             setForm({
-                date: data.date.split("T")[0],
-                venue: data.venue,
-                city: data.city,
-                infoText: data.infoText,
-                infoLink: data.infoLink
+                title: data.title,
+                type: data.type,
+                content: data.content, 
+                mediaUrl: data.mediaUrl, 
             });
         };
 
@@ -69,46 +92,59 @@ const EditLatest = () => {
     return (
         <div className="main-wrapper">
             <div className="form">
-                <h2>edit shows</h2>
+                <h2>edit news update</h2>
                 <form onSubmit={handleUpdate}>
                     <div className="input-group">
-                        <label>date</label>
+                        <label>title</label>
                         <input
-                            name="date"
-                            type="date"
-                            value={form.date || ''}
-                            placeholder="date" 
-                            onChange={handleChange} 
+                            name="title"
+                            type="text"
+                            value={form.title}
+                            onChange={handleChange}
+                            required 
                         />
                     </div>
-                    <input 
-                        name="venue"
-                        type="text"
-                        value={form.venue || ''}
-                        placeholder="venue" 
-                        onChange={handleChange} 
-                    />
-                    <input 
-                        name="city"
-                        type="text"
-                        value={form.city || ''}
-                        placeholder="city" 
-                        onChange={handleChange} 
-                    />
-                    <input 
-                        name="infoText" 
-                        type="text" 
-                        value={form.infoText || ''}
-                        placeholder="infoText" 
-                        onChange={handleChange} 
-                    />
-                    <input 
-                        name="infoLink" 
-                        type="text" 
-                        value={form.infoLink || ''}
-                        placeholder="infoLink" 
-                        onChange={handleChange} 
-                    />
+                    
+                    {form.type === "VIDEO" && (
+                        <div className="input-group">
+                            <label>youtube link</label>
+                            <input 
+                                name="mediaUrl"
+                                type="text" 
+                                placeholder="https://www.youtube.com/watch?v=..." 
+                                value={form.mediaUrl} 
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                    )}
+
+                    {form.type === "IMAGE" && (
+                        <div className="input-group">
+                            <label>current image</label>
+                            <img src={`http://localhost:5000${existingImagePath}`} className="edit-cover-preview-small" />
+                            
+                            <label>upload new (optional)</label>
+                            <input 
+                                type="file"
+                                name="mediaUrl"
+                                id="image-input"
+                                type="file"
+                                accept="image/*" 
+                                onChange={handleFileChange} />
+                        </div>
+                    )}
+
+                    <div className="input-group">
+                        <label>content (optional)</label>
+                        <textarea
+                            name="content"
+                            rows="6"
+                            value={form.content}
+                            onChange={handleChange}
+                        />
+                    </div>
+
                     <button type="submit" >Submit</button>
                 </form>
                 <div className="message-container">

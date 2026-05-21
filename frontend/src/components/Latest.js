@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import cityImage from '../assets/city.jpg';
+import CityImage from '../assets/city.jpg';
 import "./Latest.css";
 
 const Latest = () => {
@@ -36,7 +36,7 @@ const Latest = () => {
             case 'VIDEO':
                 return <YouTubeEmbed id={update.mediaUrl} />;
             case 'IMAGE':
-                return <img src={cityImage} alt={update.title} />;
+                return <img src={CityImage} alt={update.title} />;
             case 'TEXT':
                 default:
                 return null;
