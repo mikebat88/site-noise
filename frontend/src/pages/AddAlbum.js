@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import FormatUrl from "../components/FormatUrl.js";
 import "./MusicGridGlobal.css";
 
 
@@ -41,8 +42,8 @@ const AddAlbum = () => {
             const formData = new FormData();
             formData.append("Title", form.title);
             formData.append("Cover", file);
-            formData.append("BuyLink", form.buyLink);
-            formData.append("StreamLink", form.streamLink);
+            formData.append("BuyLink", FormatUrl(form.buyLink));
+            formData.append("StreamLink", FormatUrl(form.streamLink));
             formData.append("ReleaseDate", form.releaseDate);
     
             const response = await fetch('http://localhost:5000/api/albums', {

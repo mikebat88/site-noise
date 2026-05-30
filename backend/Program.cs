@@ -359,7 +359,7 @@ app.MapPut("/api/events/{id}", async (int id, HttpRequest request, AppDbContext 
 })
 .RequireAuthorization();
 
-// remove album entry
+// remove event entry
 app.MapDelete("/api/events/{id}", async (int id, AppDbContext db) =>
 {
     var eventt = await db.Events.FindAsync(id);
@@ -388,6 +388,7 @@ app.MapGet("/api/latest/{id}", async (int id, AppDbContext db) =>
     var latest = await db.LatestUpdates.FindAsync(id);
     if (latest is not null)
     {
+        Console.WriteLine("EEEE: " + latest.MediaUrl);
         return Results.Ok(latest);
     }
     else
@@ -401,6 +402,7 @@ app.MapPost("/api/latest", async (HttpRequest request, AppDbContext db) =>
 {
 
     var form = await request.ReadFormAsync();
+    string imagePath = "/latest/default.png";
     
     string title = form["Title"].ToString();
     string type = form["Type"].ToString();
@@ -415,6 +417,27 @@ app.MapPost("/api/latest", async (HttpRequest request, AppDbContext db) =>
     if (string.IsNullOrWhiteSpace(mediaUrl))
     {
         mediaUrl = null;
+    }
+
+    
+    if (type == "IMAGE")
+    {
+        var file = form.Files["MediaUrl"];
+
+        if (file != null && file.Length > 0)
+        {
+            // Ensure the directory exists
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "latest");
+            if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+
+            var filePath = Path.Combine(folderPath, file.FileName);
+            using var stream = new FileStream(filePath, FileMode.Create);
+            await file.CopyToAsync(stream);
+            
+            imagePath = $"/latest/{file.FileName}";
+            
+            mediaUrl = imagePath;
+        }
     }
 
     var newLatest = new LatestUpdate
@@ -449,6 +472,36 @@ app.MapPut("/api/latest/{id}", async (int id, HttpRequest request, AppDbContext 
     
     latest.MediaUrl = string.IsNullOrWhiteSpace(mediaUrl) ? null : mediaUrl;
     latest.Content = string.IsNullOrWhiteSpace(content) ? null : content;
+
+    if (latest.Type == "IMAGE")
+    {
+        // Handle Image
+        var file = form.Files["Cover"];
+        if (file != null && file.Length > 0)
+        {
+            // 2. Identify the OLD file path
+            if (!string.IsNullOrEmpty(latest.MediaUrl))
+            {
+                // Combine the current directory with the relative path from the DB
+                // We trim the leading slash from album.Cover to avoid path errors
+                var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", latest.MediaUrl.TrimStart('/'));
+
+                // 3. Delete the old file if it exists
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
+            }
+            
+            // 2. Save new file
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "latest   ");
+            var filePath = Path.Combine(folderPath, file.FileName);
+            using var stream = new FileStream(filePath, FileMode.Create);
+            await file.CopyToAsync(stream);
+            
+            latest.MediaUrl = $"/latest/{file.FileName}";
+        }
+    }
 
     await db.SaveChangesAsync();
     return Results.Ok(latest);

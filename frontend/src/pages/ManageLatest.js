@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as EditIcon } from '../assets/edit.svg';
 import { ReactComponent as TrashIcon } from '../assets/trash.svg';
 import YoutoubeIdExtractor from "../components/YoutubeIdExtractor.js";
-import CityImage from '../assets/city.jpg';
 import "./AdminStyleGlobal.css";
 
 const ManageLatest = () => {
@@ -33,7 +32,7 @@ const ManageLatest = () => {
                     title="open on youtube"
                 >
                     <img 
-                        src={`https://img.youtube.com/vi/${YoutoubeIdExtractor({ link: update.mediaUrl })}/mqdefault.jpg`} 
+                        src={`https://img.youtube.com/vi/${YoutoubeIdExtractor(update.mediaUrl)}/mqdefault.jpg`} 
                         alt="watch on youtube" 
                         className="admin-mini-thumb"
                     />
@@ -47,7 +46,7 @@ const ManageLatest = () => {
             case 'VIDEO':
                 return < YoutubePreview update={update} />
             case 'IMAGE':
-                return <img src={CityImage} alt={update.title} />;
+                return <img src={`http://localhost:5000${update.mediaUrl}`} alt={update.title} />;
             case 'TEXT':
                 default:
                 return null;
@@ -97,14 +96,30 @@ const ManageLatest = () => {
         setUpdateToDelete(null);
     };
 
-    const toggleVisibility = (id) => {
-        setLatest((prevLatest) =>
-            prevLatest.map((item) =>
-                item.id === id
-                    ? { ...item, isVisible: !item.isVisible }
-                    : item
-            )
-        );
+    const toggleVisibility = async (id) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:5000/api/latest/${id}/toggle-visible`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                setLatest((prevLatest) =>
+                    prevLatest.map((item) =>
+                        item.id === id
+                            ? { ...item, isVisible: !item.isVisible }
+                            : item
+                    )
+                );
+            } else {
+                alert("SYSTEM ERROR: COULD NOT CHANGE VISIBILITY");
+            }
+        } catch (error) {
+            console.error("visibility toggle error:", error);
+        }
     };
 
 

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import FormatUrl from "../components/FormatUrl.js";
 import "./MusicGridGlobal.css";
 
 
@@ -35,8 +36,8 @@ const EditAlbum = () => {
 
         const formData = new FormData();
         formData.append("Title", form.title);
-        formData.append("BuyLink", form.buyLink);
-        formData.append("StreamLink", form.streamLink);
+        formData.append("BuyLink", FormatUrl(form.buyLink));
+        formData.append("StreamLink", FormatUrl(form.streamLink));
         formData.append("ReleaseDate", form.releaseDate);
         
         // Only append the file if the user actually picked a new one
@@ -71,8 +72,6 @@ const EditAlbum = () => {
                 streamLink: data.streamLink,
                 releaseDate: data.releaseDate.split('T')[0]
             });
-
-            console.log(`GAKJBAG ${data.title}`)
         };
 
         if (id) fetchAlbum();

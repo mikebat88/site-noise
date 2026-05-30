@@ -73,6 +73,8 @@ const EditLatest = () => {
         const fetchEvent = async () => {
             const response = await fetch(`http://localhost:5000/api/latest/${id}`);
             const data = await response.json();
+
+            console.log("data: " + data.mediaUrl);
             
             if (data.type == "IMAGE" || data.type == "VIDEO") {
                 setExistingImagePath(data.mediaUrl);
@@ -122,7 +124,7 @@ const EditLatest = () => {
                     {form.type === "IMAGE" && (
                         <div className="input-group">
                             <label>current image</label>
-                            <img src={`http://localhost:5000${existingImagePath}`} className="edit-cover-preview-small" />
+                            <img src={`http://localhost:5000/${existingImagePath}`} className="edit-cover-preview-small" />
                             
                             <label>upload new (optional)</label>
                             <input 

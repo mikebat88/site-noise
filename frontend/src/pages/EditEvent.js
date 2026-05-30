@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { data, Link, useNavigate, useParams } from 'react-router-dom';
+import FormatUrl from "../components/FormatUrl.js";
 import "./MusicGridGlobal.css";
 
 
@@ -31,7 +32,7 @@ const EditEvent = () => {
         formData.append("Venue", form.venue);
         formData.append("City", form.city);
         formData.append("infoText", form.infoText);
-        formData.append("infoLink", form.infoLink);
+        formData.append("infoLink", FormatUrl(form.infoLink));
 
         const response = await fetch(`http://localhost:5000/api/events/${id}`, {
             method: 'PUT',

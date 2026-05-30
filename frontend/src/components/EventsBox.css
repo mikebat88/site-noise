@@ -14,6 +14,14 @@
     padding: 0 25   px;
 }
 
+.events-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .event-row {
     display: flex;
     flex-direction: row;
@@ -22,9 +30,6 @@
     color: white;
 }
 
-.event-row p {
-
-}
 
 .event-row a {
     margin: auto 0;

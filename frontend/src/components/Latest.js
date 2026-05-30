@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
-import CityImage from '../assets/city.jpg';
+import { Link, useNavigate } from "react-router-dom";
+import YoutubeIdExtractor from "./YoutubeIdExtractor.js";
 import "./Latest.css";
 
 const Latest = () => {
-    //const [latest, setLatest] = useState([]);
+    const [latest, setLatest] = useState([]);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
@@ -34,45 +34,16 @@ const Latest = () => {
     const renderMedia = (update) => {
         switch (update.type) {
             case 'VIDEO':
-                return <YouTubeEmbed id={update.mediaUrl} />;
+                return <YouTubeEmbed id={YoutubeIdExtractor(update.mediaUrl)} />;
             case 'IMAGE':
-                return <img src={CityImage} alt={update.title} />;
+                return <img src={`http://localhost:5000${update.mediaUrl}`} alt={update.title} />;
             case 'TEXT':
                 default:
                 return null;
         }
     };
 
-    const [latest, setLatest] = useState([
-        {
-            "id": 1,
-            "title": "title1",
-            "content": "kmbklnbknlsdkndsgklnsd nllnasdnlda nladsnlads lsanklgdskngsdnkl",
-            "mediaUrl": null,
-            "type": "TEXT",
-            "createdAt": "2026-05-14",
-            "isVisible": true
-        },
-        {
-            "id": 2,
-            "title": "title2",
-            "content": "",
-            "mediaUrl": "NcOwTceSbH4",
-            "type": "VIDEO",
-            "createdAt": "2026-05-12",
-            "isVisible": false
-        },
-        {
-            "id": 3,
-            "title": "title3",
-            "content": "kllkad dalkdafkl adflkfafalk adll",
-            "mediaUrl": "../assets/city.jpg",
-            "type": "IMAGE",
-            "createdAt": "2026-05-16",
-            "isVisible": false
-        }
-    ]);
-/*
+
     useEffect(() => {
             const fetchAlbums = async () => {
                 try {
@@ -91,7 +62,6 @@ const Latest = () => {
     
             fetchAlbums();
         }, []);
-*/
 
     return (
         <div className="main-container">
@@ -99,13 +69,15 @@ const Latest = () => {
             <div className="updates-list">
                 {loading ? (
                     <p className="status-message">LOADING DATABASE...</p>
-                ) : latest.length == 0 ? (  
+                ) : latest.filter((update) => update.isVisible).length == 0 ? (  
                     <div className="empty-state">
-                        <p>no news currently added</p>
+                        <p>no news at the moment</p>
                     </div>
                 ) : (
                     <div className="updates-table">
-                        {latest.map((update) => (
+                        {latest
+                            .filter((update) => update.isVisible)
+                            .map((update) => (
                         <div className="update-row">
 
                             <div className={`latest-card ${update.type.toLowerCase()}   `}>

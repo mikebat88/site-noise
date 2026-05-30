@@ -16,6 +16,9 @@ const Music = () => {
 					const sorted = data.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
 					
 					setAlbums(sorted);
+
+					console.log(sorted);
+
 					setLoading(false);
 				} catch (error) {
 					console.error("Failed to fetch albums:", error);

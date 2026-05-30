@@ -55,11 +55,11 @@ const AddLatest = () => {
                 formData.append("MediaUrl", form.mediaUrl);
             }
 
+            
             if (form.type === "IMAGE" && file) {
                 formData.append("MediaUrl", file); 
             }
-
-    
+                
             const response = await fetch('http://localhost:5000/api/latest', {
                 method: 'POST',
                 headers: {

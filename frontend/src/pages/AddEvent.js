@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import FormatUrl from "../components/FormatUrl.js";
+
 import "./MusicGridGlobal.css";
 
 
@@ -37,7 +39,7 @@ const AddEvent = () => {
             formData.append("Venue", form.venue);
             formData.append("City", form.city);
             formData.append("InfoText", form.infoText);
-            formData.append("InfoLink", form.infoLink);
+            formData.append("InfoLink", FormatUrl(form.infoLink));
     
             const response = await fetch('http://localhost:5000/api/events', {
                 method: 'POST',
