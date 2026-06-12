@@ -30,9 +30,9 @@ jobs:
       with:
         dotnet-version: '8.0.x'
     - name: Publish .NET Backend
-          run: |
-            cd backend
-            dotnet publish -c Release -o ./publish
+      run: |
+        cd backend # Adjust to your actual folder name
+        dotnet publish -c Release -o ./publish
 
     # ─── DEPLOY TO AWS VIA SSH ───
     - name: Copy Files to AWS Server
