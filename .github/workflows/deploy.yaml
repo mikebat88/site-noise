@@ -26,7 +26,7 @@ jobs:
           else
             git fetch --all
             git reset --hard origin/main
-          end
+          fi
 
           # 3. Tell Docker Compose to build the fresh images and boot them up in the background (-d)
           # --build forces Docker to look for code changes and re-compile your .NET and React apps
