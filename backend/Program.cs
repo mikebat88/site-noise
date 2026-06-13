@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using backend.Models;
-using backend.Data;
+using backend.DBcontext;
 using backend.DTOs;
 
 
@@ -46,7 +46,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=noise.db"));
+    options.UseSqlite("Data Source=Data/noise.db"));
 
 builder.Services.AddOpenApi();
 builder.Services.AddAuthorization();
