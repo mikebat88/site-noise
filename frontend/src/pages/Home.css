@@ -1,5 +1,7 @@
 .home-container h1 {
-    margin: 50px    ;
+    margin: 50px;
+
+    zoom: 0.75;
 }
 
 .events {

@@ -35,6 +35,8 @@
   padding: 35px 10px;
   border: 1px solid white;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.218);
+
+  zoom: 0.75;
 }
 
 .nav-logo {
@@ -61,6 +63,8 @@
   text-decoration: none;
   color: white;
   transition: 0.2s;
+
+  zoom: 0.75;
 }
 
 .social-links a:hover {
@@ -78,6 +82,8 @@
   font-size: 1.4rem;
   letter-spacing: 1.5px;
   transition: color 0.2s;
+
+  zoom: 0.75;
 }
 
 .page-links a:not(.active):hover {

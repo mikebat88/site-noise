@@ -11,6 +11,8 @@
   background-color: #0a0a0a;
   width: 90%;
   margin: 40px auto;
+
+  zoom: 0.75;
 }
 
 .admin-sidebar {
