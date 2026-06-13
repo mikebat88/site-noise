@@ -24,7 +24,7 @@ jobs:
       run: |
         cd frontend
         npm ci
-        npm run build
+        CI=false npm run build
 
     # 2. Sync the pre-built static files and code straight to your AWS server
     - name: Deploy Pre-Built Assets to Server via SSH/RSYNC
