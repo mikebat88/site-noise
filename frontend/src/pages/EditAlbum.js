@@ -45,7 +45,7 @@ const EditAlbum = () => {
             formData.append("Cover", file);
         }
 
-        const response = await fetch(`http://localhost:5000/api/albums/${id}`, {
+        const response = await fetch(`/api/albums/${id}`, {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}` },
             body: formData
@@ -63,7 +63,7 @@ const EditAlbum = () => {
 
     useEffect(() => {
         const fetchAlbum = async () => {
-            const response = await fetch(`http://localhost:5000/api/album/${id}`);
+            const response = await fetch(`/api/album/${id}`);
             const data = await response.json();
             setExistingCoverPath(data.cover);
             setForm({
@@ -91,7 +91,7 @@ const EditAlbum = () => {
                     />
                     <div className="input-group">
                         <label>current cover</label>
-                        <img src={`http://localhost:5000${existingCoverPath}`} className="edit-cover-preview-small" />
+                        <img src={`/${existingCoverPath}`} className="edit-cover-preview-small" />
                         
                         <label>upload new (optional)</label>
                         <input type="file" onChange={handleFileChange} />

@@ -36,7 +36,7 @@ const Latest = () => {
             case 'VIDEO':
                 return <YouTubeEmbed id={YoutubeIdExtractor(update.mediaUrl)} />;
             case 'IMAGE':
-                return <img src={`http://localhost:5000${update.mediaUrl}`} alt={update.title} />;
+                return <img src={`/${update.mediaUrl}`} alt={update.title} />;
             case 'TEXT':
                 default:
                 return null;
@@ -47,7 +47,7 @@ const Latest = () => {
     useEffect(() => {
             const fetchAlbums = async () => {
                 try {
-                    const response = await fetch('http://localhost:5000/api/latest');
+                    const response = await fetch('/api/latest');
                     const data = await response.json();
                     
                     const sorted = data.sort((a, b) => new Date(b.date) - new Date(a.date));

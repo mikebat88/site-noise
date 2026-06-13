@@ -23,7 +23,7 @@ const ManageAlbums = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/api/albums/${albumToDelete.id}`, {
+            const response = await fetch(`/api/albums/${albumToDelete.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -55,7 +55,7 @@ const ManageAlbums = () => {
     useEffect(() => {
         const fetchAlbums = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/albums');
+                const response = await fetch('/api/albums');
                 const data = await response.json();
                 
                 // Sort by date (latest first) so your newest uploads are at the top
@@ -89,7 +89,7 @@ const ManageAlbums = () => {
                     {albums.map((album) => (
                     <div key={album.id} className="album-card">
                         <img 
-                            src={`http://localhost:5000${album.cover}`} 
+                            src={`/${album.cover}`} 
                             alt={album.title} 
                             className="album-cover" 
                         />

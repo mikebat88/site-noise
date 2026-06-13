@@ -41,7 +41,7 @@ const AddEvent = () => {
             formData.append("InfoText", form.infoText);
             formData.append("InfoLink", FormatUrl(form.infoLink));
     
-            const response = await fetch('http://localhost:5000/api/events', {
+            const response = await fetch('/api/events', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

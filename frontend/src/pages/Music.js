@@ -10,7 +10,7 @@ const Music = () => {
 	useEffect(() => {
 			const fetchAlbums = async () => {
 				try {
-					const response = await fetch('http://localhost:5000/api/albums');
+					const response = await fetch('/api/albums');
 					const data = await response.json();
 					
 					const sorted = data.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
@@ -42,7 +42,7 @@ const Music = () => {
                     {albums.map((album) => (
                     <div key={album.id} className="album-card">
                         <img 
-                            src={`http://localhost:5000${album.cover}`} 
+                            src={`/${album.cover}`} 
                             alt={album.title} 
                             className="album-cover" 
                         />

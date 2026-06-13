@@ -34,7 +34,7 @@ const EditEvent = () => {
         formData.append("infoText", form.infoText);
         formData.append("infoLink", FormatUrl(form.infoLink));
 
-        const response = await fetch(`http://localhost:5000/api/events/${id}`, {
+        const response = await fetch(`/api/events/${id}`, {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}` },
             body: formData
@@ -52,7 +52,7 @@ const EditEvent = () => {
 
     useEffect(() => {
         const fetchEvent = async () => {
-            const response = await fetch(`http://localhost:5000/api/events/${id}`);
+            const response = await fetch(`/api/events/${id}`);
             const data = await response.json();
             
             setForm({

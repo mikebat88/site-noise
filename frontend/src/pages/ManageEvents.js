@@ -33,7 +33,7 @@ const ManageEvents = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/api/events/${eventToDelete.id}`, {
+            const response = await fetch(`/api/events/${eventToDelete.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -66,7 +66,7 @@ const ManageEvents = () => {
     useEffect(() => {
             const fetchAlbums = async () => {
                 try {
-                    const response = await fetch('http://localhost:5000/api/events');
+                    const response = await fetch('/api/events');
                     const data = await response.json();
                     
                     const sorted = data.sort((a, b) => new Date(a.date) - new Date(b.date));

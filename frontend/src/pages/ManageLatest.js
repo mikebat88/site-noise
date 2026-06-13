@@ -46,7 +46,7 @@ const ManageLatest = () => {
             case 'VIDEO':
                 return < YoutubePreview update={update} />
             case 'IMAGE':
-                return <img src={`http://localhost:5000${update.mediaUrl}`} alt={update.title} />;
+                return <img src={`/${update.mediaUrl}`} alt={update.title} />;
             case 'TEXT':
                 default:
                 return null;
@@ -66,7 +66,7 @@ const ManageLatest = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/api/latest/${updateToDelete.id}`, {
+            const response = await fetch(`/api/latest/${updateToDelete.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -99,7 +99,7 @@ const ManageLatest = () => {
     const toggleVisibility = async (id) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/api/latest/${id}/toggle-visible`, {
+            const response = await fetch(`/api/latest/${id}/toggle-visible`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -126,7 +126,7 @@ const ManageLatest = () => {
     useEffect(() => {
             const fetchAlbums = async () => {
                 try {
-                    const response = await fetch('http://localhost:5000/api/latest');
+                    const response = await fetch('/api/latest');
                     const data = await response.json();
                     
                     const sorted = data.sort((a, b) => new Date(b.date) - new Date(a.date));

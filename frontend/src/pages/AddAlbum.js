@@ -46,7 +46,7 @@ const AddAlbum = () => {
             formData.append("StreamLink", FormatUrl(form.streamLink));
             formData.append("ReleaseDate", form.releaseDate);
     
-            const response = await fetch('http://localhost:5000/api/albums', {
+            const response = await fetch('/api/albums', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

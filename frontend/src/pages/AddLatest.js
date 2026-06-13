@@ -60,7 +60,7 @@ const AddLatest = () => {
                 formData.append("MediaUrl", file); 
             }
                 
-            const response = await fetch('http://localhost:5000/api/latest', {
+            const response = await fetch('/api/latest', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
