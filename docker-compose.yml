@@ -19,15 +19,15 @@ services:
     restart: always
 
   # 2. THE FRONTEND HOLDING CONTAINER
-    frontend:
-      image: alpine:latest
-      container_name: noise-frontend
-      volumes:
-        # We change this to a simple bind-mount that maps your built files straight to Nginx
-        - ./frontend/build:/app/build
-        - frontend-assets:/app/assets
-      command: >
-        sh -c "cp -r /app/build/. /app/assets/ && echo 'Frontend assets sync complete' && tail -f /dev/null"
+  frontend:
+    image: alpine:latest
+    container_name: noise-frontend
+    volumes:
+      # We change this to a simple bind-mount that maps your built files straight to Nginx
+      - ./frontend/build:/app/build
+      - frontend-assets:/app/assets
+    command: >
+      sh -c "cp -r /app/build/. /app/assets/ && echo 'Frontend assets sync complete' && tail -f /dev/null"
 
 volumes:
   backend-data:
