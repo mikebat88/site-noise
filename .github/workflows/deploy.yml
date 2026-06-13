@@ -1,0 +1,61 @@
+name: optimized docker deployment to aws
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 1. Leverage GitHub's fast hardware to build the React Frontend
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24'
+        cache: 'npm'
+        cache-dependency-path: './frontend/package-lock.json'
+
+    - name: Build Frontend Assets
+      run: |
+        cd frontend
+        npm ci
+        npm run build
+
+    # 2. Sync the pre-built static files and code straight to your AWS server
+    - name: Deploy Pre-Built Assets to Server via SSH/RSYNC
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /var/www/noise-site
+          
+          # Clean out old build files before pulling new ones
+          rm -rf frontend/build
+
+    - name: Copy Files to AWS
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        source: "."
+        target: "/var/www/noise-site"
+
+    # 3. Tell the server to boot up Docker (Backend compiles fast, Frontend is already done!)
+    - name: Boot Docker Containers on Server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /var/www/noise-site
+          sudo docker-compose up --build -d
+          sudo docker image prune -f
