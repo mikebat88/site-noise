@@ -26,7 +26,8 @@ services:
         # We change this to a simple bind-mount that maps your built files straight to Nginx
         - ./frontend/build:/app/build
         - frontend-assets:/app/assets
-      command: sh -c "cp -r /app/build/. /app/assets/ && echo 'Frontend assets sync complete' && tail -f /dev/null"  restart: "no" # This finishes instantly once files are copied into the volume
+      command: >
+        sh -c "cp -r /app/build/. /app/assets/ && echo 'Frontend assets sync complete' && tail -f /dev/null"
 
 volumes:
   backend-data:
