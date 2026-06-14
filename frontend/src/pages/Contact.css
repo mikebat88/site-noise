@@ -10,8 +10,6 @@
     font-size: 3rem;
     text-transform: none;
     margin: 40px 0;
-
-    zoom: 0.75;
 }
 
 .blink {
@@ -26,8 +24,6 @@
 
 .contact-items {
     border: 1px solid white;
-
-    zoom: 0.75;
 
 }
 

@@ -19,8 +19,6 @@
     max-width: 500px; 
     padding: 40px;
     box-sizing: border-box; 
-
-    zoom: 0.75;
 }
 
 .form h2 {
@@ -154,8 +152,6 @@
     align-items: center;
     z-index: 1000;
     backdrop-filter: blur(2px);
-
-    zoom: calc(1 / 0.75);
 }
 
 .modal-content {
@@ -167,8 +163,6 @@
     color: white;
     max-width: 400px;
     font-weight: bold;
-
-    zoom: 0.75;
 }
 
 .album-name-highlight {

@@ -15,8 +15,6 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-
-    zoom: 0.75;
 }
 
 .footer-title {
@@ -25,8 +23,6 @@
     text-align: center;
     padding-top: 20px;
     margin: 0 auto;
-
-    zoom: 0.75;
 }
 
 .footer-title img {
