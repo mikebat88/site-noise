@@ -42,7 +42,7 @@ const Music = () => {
                     {albums.map((album) => (
                     <div key={album.id} className="album-card">
                         <img 
-                            src={`/${album.cover}`} 
+                            src={`${album.cover}`} 
                             alt={album.title} 
                             className="album-cover" 
                         />
