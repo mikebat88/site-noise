@@ -48,7 +48,7 @@ jobs:
         source: "."
         target: "/var/www/noise-site"
 
-    # 3. Tell the server to boot up Docker (Backend compiles fast, Frontend is already done!)
+    # 3. Tell the server to rebuild and run the standalone backend container
     - name: Boot Docker Containers on Server
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -57,5 +57,23 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           cd /var/www/noise-site
-          sudo docker-compose up --build -d
+          
+          # 1. Build the fresh backend image locally on the AWS server
+          sudo docker build -t noise-site_backend:latest ./backend
+          
+          # 2. Safely stop and delete the old container instance
+          sudo docker stop noise-backend || true
+          sudo docker rm noise-backend || true
+          
+          # 3. Launch the new backend container with secrets injected directly from GitHub
+          sudo docker run -d \
+            --name noise-backend \
+            --restart always \
+            -p 5000:5000 \
+            -v /var/www/noise-site/backend-data:/app/Data \
+            -e ASPNETCORE_ENVIRONMENT=Production \
+            -e Jwt__Key="${{ secrets.JWT_KEY }}" \
+            noise-site_backend:latest
+          
+          # 4. Clean up any leftover dangling build images
           sudo docker image prune -f
