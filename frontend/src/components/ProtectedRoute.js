@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children }) => {
             }
 
             try {
-                const response = await fetch('http://localhost:5000/api/verify', {
+                const response = await fetch('/api/verify', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
