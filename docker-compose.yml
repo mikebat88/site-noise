@@ -12,6 +12,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:5000
+      - Jwt__Key=${PRODUCTION_JWT_KEY}
     volumes:
       # CRITICAL: This maps the folder holding your SQLite database inside the container
       # to a permanent folder on your AWS server hard drive so data is never lost on restarts!
