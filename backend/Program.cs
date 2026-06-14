@@ -494,7 +494,7 @@ app.MapPut("/api/latest/{id}", async (int id, HttpRequest request, AppDbContext 
             }
             
             // 2. Save new file
-            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "latest   ");
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "latest");
             var filePath = Path.Combine(folderPath, file.FileName);
             using var stream = new FileStream(filePath, FileMode.Create);
             await file.CopyToAsync(stream);

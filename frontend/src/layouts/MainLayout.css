@@ -40,4 +40,19 @@
   .bg-video-container {
     display: none;
   }
+
+  .content {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 12px;      
+    box-sizing: border-box;   
+  }
+}
+
+@media (max-width: 600px) {
+
+  .main-container {
+    padding: 0;
+  }
 }

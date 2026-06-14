@@ -33,6 +33,7 @@ const MainLayout = () => {
       
       <div className="main-container">
         <Navbar />
+        
         <main className="content">
           <Outlet />
         </main>

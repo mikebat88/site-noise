@@ -11,7 +11,7 @@
 .empty-state.events {
     margin: auto;
     text-align: center;
-    padding: 0 25   px;
+    padding: 0 25px;
 }
 
 .events-table {
@@ -40,4 +40,14 @@
 
 .event-row a:hover {
     color: rgb(172, 56, 255);    
+}
+
+@media (max-width: 600px) {
+    .event-row {
+        font-size: 3.5vw;
+    }
+
+    .empty-state.events {
+        font-size: 4vw;
+    }
 }

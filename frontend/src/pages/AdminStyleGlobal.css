@@ -231,10 +231,13 @@
 }
 
 .event-row.manage {
+    width: 90%; 
     justify-content: space-between;
 }
 
 .edit-buttons.svg {
+    display: flex;
+    flex-direction: row;
     margin-left: 20 px;
 }
 
@@ -308,4 +311,18 @@
     background-repeat: no-repeat;
     background-position: calc(100% - 15px) center;
     background-size: 12px;
+}
+
+@media (max-width: 600px) {
+    .form {
+        width: 100%;
+    }
+
+    .edit-buttons.svg button {
+        font-size: 4vw;
+    }
+
+    .main-container {
+        padding: 0 12px;
+    }
 }

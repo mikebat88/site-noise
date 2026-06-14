@@ -103,7 +103,7 @@
   z-index: 10;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .main-nav::before {
     background-size: 100% 2.5px;
   }
@@ -114,5 +114,9 @@
 
   .main-nav:after {
     width: 90%; 
-}
+  }
+
+  .social-links {
+    gap: 7vw;
+  }
 }
