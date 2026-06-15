@@ -3,3 +3,4 @@ backend/Data/*.db
 backend/wwwroot/*
 backend/obj/Debug/*
 docker-compose.yml
+frontend/src/assets/*.png

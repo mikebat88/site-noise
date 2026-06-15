@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from 'react-router-dom';
-import BandTitle from "../assets/text.png";
+import BandTitle from "../assets/text.webp";
 import "./Footer.css";
 
 const Footer = () => {

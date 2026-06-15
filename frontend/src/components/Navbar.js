@@ -4,8 +4,8 @@ import { FaInstagram, FaSpotify, FaYoutube } from 'react-icons/fa';
 import { ReactComponent as BandcampIcon } from '../assets/bandcamp.svg';
 import { ReactComponent as AppleMusicIcon } from '../assets/apple-music.svg';
 import { ReactComponent as YoutubeMusicIcon } from '../assets/youtube-music.svg';
-import BandLogo from "../assets/pop.png";
-import BandTitle from "../assets/text.png";
+import BandLogo from "../assets/pop.webp";
+import BandTitle from "../assets/text.webp";
 import "./Navbar.css";
 
 const Navbar = () => {
