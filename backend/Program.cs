@@ -195,11 +195,7 @@ app.MapPost("/api/albums", async (HttpRequest request, AppDbContext db) =>
     if (file != null && file.Length > 0)
     {
         // Ensure the directory exists
-        // localhost
-        //var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "covers");
-       
-        // server
-        var folderPath = "/var/www/noise-site/backend/wwwroot/covers";
+        var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "covers");
         if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
 
         var filePath = Path.Combine(folderPath, file.FileName);
@@ -260,11 +256,7 @@ app.MapPut("/api/albums/{id}", async (int id, HttpRequest request, AppDbContext 
         }
         
         // 2. Save new file
-        // locahost
-        //var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "covers");
-        
-        // server
-        var folderPath = "/var/www/noise-site/backend/wwwroot/covers";
+        var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "covers");
         var filePath = Path.Combine(folderPath, file.FileName);
         using var stream = new FileStream(filePath, FileMode.Create);
         await file.CopyToAsync(stream);

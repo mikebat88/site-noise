@@ -1,2 +1,4 @@
 backend/Migrations/
 backend/Data/*.db
+backend/wwwroot/*
+backend/obj/Debug/*
