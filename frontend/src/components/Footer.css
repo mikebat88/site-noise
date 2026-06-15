@@ -64,6 +64,20 @@
     color: rgba(255, 255, 255, 0.5);;
 }
 
+.footer-title #artwork-link {
+    margin-bottom: 50px;
+}
+
+.footer-title a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.3);
+    transition: color 0.2s;
+}
+
+.footer-title a:hover {
+    color: rgba(255, 255, 255, 0.5);;
+}
+
 @media (max-width: 600px) {
     .footer-container {
         width: 80%;

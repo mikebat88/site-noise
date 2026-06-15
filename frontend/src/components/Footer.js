@@ -28,6 +28,8 @@ const Footer = () => {
 			</div>
 
 			<div className="footer-title">
+				<p id="artwork-link">artwork by <a href="https://riverkaz.carrd.co">https://riverkaz.carrd.co</a></p>
+
 				<img src={BandTitle} alt="Band logo" className="logo" />
 				<p>© 2026 Mikuláš Báthory</p>
 			</div>

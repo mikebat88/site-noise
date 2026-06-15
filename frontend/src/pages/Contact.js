@@ -31,7 +31,7 @@ const Contact = () => {
             <div className="contact-items">
                 <div className="contact-item email">
                     <div className="contact-icon email"><EmailIcon /></div>
-                    <p>yaboismusicofficial@gmail.com</p>
+                    <p>contact@noisewithaslash.com</p>
                 </div>
                 <div className="contact-item instagram">
                     <div className="contact-icon instagram"><InstagramIcon /></div>
