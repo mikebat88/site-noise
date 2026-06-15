@@ -46,7 +46,7 @@ const ManageLatest = () => {
             case 'VIDEO':
                 return < YoutubePreview update={update} />
             case 'IMAGE':
-                return <img src={`/${update.mediaUrl}`} alt={update.title} />;
+                return <img src={`${update.mediaUrl}`} alt={update.title} />;
             case 'TEXT':
                 default:
                 return null;
