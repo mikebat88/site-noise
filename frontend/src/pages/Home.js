@@ -15,8 +15,24 @@ const Home = () => {
 
 			</div>
 
+			<div className="latest-release">
+				<h1>latest release</h1>
+
+				<iframe className="spotify-box"
+					data-testid="embed-iframe"
+					src="https://open.spotify.com/embed/album/0m1EXcI0GhqHMQXSfqhv5M?utm_source=generator&si=13494647b7e344df&theme=1"
+					height="552"
+					frameBorder="0"
+					allowfullscreen=""
+					allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+					loading="lazy">	
+				</iframe>
+			</div>
+
+
 			<div className="upcoming-events">
 				<h1>UPCOMING EVENTS</h1>
+
 
 				<div className="events"> <EventsBox /> </div>
 
