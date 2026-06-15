@@ -36,7 +36,7 @@ const Latest = () => {
             case 'VIDEO':
                 return <YouTubeEmbed id={YoutubeIdExtractor(update.mediaUrl)} />;
             case 'IMAGE':
-                return <img src={`/${update.mediaUrl}`} alt={update.title} />;
+                return <img src={`${update.mediaUrl}`} alt={update.title} />;
             case 'TEXT':
                 default:
                 return null;
